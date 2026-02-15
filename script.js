@@ -1,5 +1,6 @@
 
-import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.2.2/bundle.js";
+// Import for global side effects (window.esptool)
+import "https://unpkg.com/esptool-js@0.2.2/bundle.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
