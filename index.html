@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoilSense | Monitoreo Agrícola</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="ICONO.jpg.jpeg" alt="SoilSense Logo">
+            SoilSense <span>PROJECT</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#hero" class="active">Inicio</a></li>
+                <li><a href="#problema">Contexto</a></li>
+                <li><a href="#tecnologias">Tecnologías</a></li>
+                <li><a href="#arquitectura">Arquitectura</a></li>
+                <li><a href="#datos">Datos</a></li>
+                <li><a href="upload.html" class="nav-btn">Actualizar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="grid-bg"></div>
+
+    <section id="hero">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+
+        <div class="hero-content reveal active">
+            <span class="badge">Proyecto de Titulación v1.0</span>
+            <h1>Monitoreo Agrícola<br>Inteligente</h1>
+            <p>Una solución integral que fusiona <strong>IoT & Machine Learning</strong> para optimizar el rendimiento
+                de cultivos a pequeña escala mediante análisis predictivo en tiempo real.</p>
+
+            <div class="cta-group">
+                <button class="btn-primary" onclick="document.getElementById('tecnologias').scrollIntoView();">Ver
+                    Tecnologías</button>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <!-- Student Info Card -->
+                <div
+                    style="background: rgba(255,255,255,0.9); padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 4px solid var(--primary); display: inline-block; text-align: left; backdrop-filter: blur(5px);">
+                    <div style="font-size: 1rem; font-weight: 800; color: var(--bg-dark);">Victor Manuel</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light); font-weight: 500;">Ing. Desarrollo
+                        Software</div>
+                    <div style="font-size: 0.8rem; color: var(--secondary); margin-top: 0.4rem; font-weight: 600;">
+                        Universidad Tecnológica • 2024</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual reveal active">
+            <!-- Background Card for Depth -->
+            <div class="iso-card bg-card"></div>
+
+            <!-- Main Interactive Card -->
+            <div class="iso-card main-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 1.2rem;">Estado del Cultivo</h3>
+                    <span
+                        style="font-size: 0.8rem; color: var(--secondary); background: rgba(67, 160, 71, 0.1); padding: 4px 8px; border-radius: 4px;">En
+                        Línea ●</span>
+                </div>
+
+                <div class="data-row">
+                    <span class="data-label">Humedad Suelo</span>
+                    <span class="data-val secondary" id="val-humidity">65%</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Temperatura</span>
+                    <span class="data-val primary" id="val-temp">24.5°C</span>
+                </div>
+                <div class="data-row" style="border: none;">
+                    <span class="data-label">Luz Solar</span>
+                    <span class="data-val" id="val-light">Normal</span>
+                </div>
+
+                <!-- Animated Chart -->
+                <div class="chart-container">
+                    <div class="chart-bar active" style="height: 40%;"></div>
+                    <div class="chart-bar highlight" style="height: 70%;"></div>
+                    <div class="chart-bar active" style="height: 50%;"></div>
+                    <div class="chart-bar highlight" style="height: 85%;"></div>
+                    <div class="chart-bar active" style="height: 60%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="problema">
+        <div class="section-header reveal">
+            <h2>Problemática Actual</h2>
+            <p>La agricultura tradicional se enfrenta a desafíos críticos que requieren soluciones tecnológicas
+                inmediatas.</p>
+        </div>
+
+        <div class="grid-3 reveal">
+            <div class="stat-card">
+                <div class="icon-box" style="background: rgba(255, 112, 67, 0.1);">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--primary)" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12 2.69l5.74 5.88-.74.77L12 4.19l-5 5.15-.74-.77L12 2.69zm0 8.62l3.41 3.51-.74.77L12 12.89l-2.67 2.7-.74-.77L12 11.31zm0 8.62l1.09 1.12-.74.77L12 21.1l-.35.36-.74-.77L12 19.93z" />
+                    </svg>
+                </div>
+                <span class="stat-number" data-target="40">0%</span>
+                <p>De agua desperdiciada por riego ineficiente en cultivos.</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box" style="background: rgba(67, 160, 71, 0.1);">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--secondary)"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M16 12l-4 4-4-4M12 8v8" />
+                    </svg>
+                </div>
+                <span class="stat-number" data-target="0">No Data</span>
+                <p>Falta de registros históricos para tomar decisiones.</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box" style="background: rgba(45, 52, 54, 0.1);">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--bg-dark)" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" />
+                    </svg>
+                </div>
+                <span class="stat-number" data-target="85">High Risk</span>
+                <p>Riesgo de pérdida de cultivos por detección tardía.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tecnologias">
+        <div class="section-header reveal">
+            <h2>Stack Tecnológico</h2>
+        </div>
+
+        <div class="tech-container reveal">
+            <div class="tech-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <path d="M9 9h6M9 13h6M9 17h6" />
+                </svg>
+                ESP32 (C++)
+            </div>
+            <div class="tech-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                    <line x1="12" y1="20" x2="12" y2="20" />
+                </svg>
+                Bluetooth LE
+            </div>
+            <div class="tech-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Android (Kotlin)
+            </div>
+            <div class="tech-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3" />
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                </svg>
+                SQLite / Room
+            </div>
+        </div>
+    </section>
+
+    <section id="arquitectura">
+        <div class="section-header reveal">
+            <h2>Arquitectura del Sistema</h2>
+        </div>
+
+        <div class="flow-container reveal">
+            <div class="flow-steps">
+                <div class="flow-item">
+                    <div class="flow-icon-wrapper">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M2 22h20M12 2v20M5 10l7-7 7 7" />
+                        </svg>
+                    </div>
+                    <h4>Sensores</h4>
+                    <p>Adquisición de Señal</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-icon-wrapper">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                            <rect x="9" y="9" width="6" height="6" />
+                            <line x1="9" y1="1" x2="9" y2="4" />
+                            <line x1="15" y1="1" x2="15" y2="4" />
+                            <line x1="9" y1="20" x2="9" y2="23" />
+                            <line x1="15" y1="20" x2="15" y2="23" />
+                        </svg>
+                    </div>
+                    <h4>ESP32</h4>
+                    <p>Procesamiento</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-icon-wrapper">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6.5 6.5l5 5 5-5M6.5 17.5l5-5 5 5" />
+                        </svg>
+                    </div>
+                    <h4>BLE</h4>
+                    <p>Transmisión</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-icon-wrapper">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                            <line x1="12" y1="18" x2="12.01" y2="18" />
+                        </svg>
+                    </div>
+                    <h4>App</h4>
+                    <p>Visualización</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-icon-wrapper">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                        </svg>
+                    </div>
+                    <h4>BD</h4>
+                    <p>Persistencia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="datos">
+        <div class="section-header reveal">
+            <h2>Modelo de Persistencia</h2>
+        </div>
+
+        <div class="db-grid reveal">
+            <div class="db-card">
+                <h4>DISPOSITIVO <span class="db-tag pk-tag">PK</span></h4>
+                <div class="code-block">
+                    UUID (VARCHAR)<br>
+                    MAC_ADDRESS (TEXT)<br>
+                    ALIAS (TEXT)
+                </div>
+            </div>
+            <div class="db-card">
+                <h4>LECTURA_SENSOR <span class="db-tag">FK</span></h4>
+                <div class="code-block">
+                    ID (INT)<br>
+                    VALOR_RAW (FLOAT)<br>
+                    TIMESTAMP (LONG)
+                </div>
+            </div>
+            <div class="db-card">
+                <h4>CULTIVO <span class="db-tag pk-tag">PK</span></h4>
+                <div class="code-block">
+                    ID (INT)<br>
+                    NOMBRE (TEXT)<br>
+                    TIPO_SEMILLA (TEXT)
+                </div>
+            </div>
+            <div class="db-card">
+                <h4>UMBRAL <span class="db-tag">Config</span></h4>
+                <div class="code-block">
+                    MIN_VALUE (FLOAT)<br>
+                    MAX_VALUE (FLOAT)<br>
+                    ACCION (TEXT)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 SoilSense | Innovación Agrícola & Tecnología</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
