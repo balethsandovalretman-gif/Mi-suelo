@@ -202,6 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Debug: Check Port
                 log('> Verificando puerto serial...', 'info');
 
+                // Use window.esptool directly
+                const esptool = window.esptool;
+                if (!esptool) {
+                    // Last ditch effort: try dynamic import fallback if window.esptool missing?
+                    // No, let's just fail clearly.
+                    throw new Error('No se encontró window.esptool. La carga del módulo falló.');
+                }
+
+                const Transport = esptool.Transport;
+                const ESPLoader = esptool.ESPLoader;
+
                 // Pass the native SerialPort object wrapper if needed, 
                 // but v0.2.0 Transport expects the device directly usually.
                 const transport = new Transport(window.serialPort);
