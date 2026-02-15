@@ -128,8 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const consoleLog = document.getElementById('console-log');
 
     const BIN_PATH = 'sueloesp32.ino.bin';
-    let esploader;
-    let transport;
+
+    // Global variables to hold state
+    // window.serialPort is set by connectBtn
 
     function log(msg, type = 'info') {
         const p = document.createElement('p');
@@ -162,9 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log('> Puerto Serie Abierto. Dispositivo listo.', 'success');
 
-                // Initialize Transport for later use
-                // Note: ESPLoader logic will be instantiated inside flashBtn click
-                // to keep the port handling cleaner in this simple implementation
+                // Store port for later use
                 window.serialPort = port;
 
             } catch (error) {
@@ -173,7 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         flashBtn.addEventListener('click', async () => {
-            if (!window.serialPort) return;
+            if (!window.serialPort) {
+                log('> Error: No hay puerto seleccionado.', 'error');
+                return;
+            }
 
             flashBtn.disabled = true;
             flashBtn.innerText = 'Procesando...';
@@ -192,22 +194,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
-                // 2. Initialize ESPLoader via Dynamic Import
-                log('> Cargando librería esptool-js...', 'info');
-
-                // Import ESPLoader and Transport from CDN
-                // Note: The bundle exports them as named exports or attaches to window depending on version.
-                // For v0.5.4 ESM usage:
-                const esptool = await import('https://unpkg.com/esptool-js@0.5.4/bundle.js');
-
-                // Fallback for different bundle structures
-                const ESPLoader = esptool.ESPLoader || window.ESPLoader;
-                const Transport = esptool.Transport || window.Transport;
-
-                if (!ESPLoader || !Transport) {
-                    throw new Error('No se pudo invocar las clases de esptool-js. Verifica la consola.');
+                // 2. Initialize ESPLoader (Global scope from bundle.js)
+                if (typeof esptool === 'undefined') {
+                    throw new Error('Librería esptool-js no cargada. Revisa tu conexión a internet.');
                 }
 
+                // Compatibility for v0.2.0 bundle which exposes classes on the 'esptool' global object
+                const Transport = esptool.Transport;
+                const ESPLoader = esptool.ESPLoader;
+
+                // Pass the native SerialPort object wrapper if needed, 
+                // but v0.2.0 Transport expects the device directly usually.
                 const transport = new Transport(window.serialPort);
                 const term = {
                     clean: () => { },
@@ -219,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const loader = new ESPLoader(transport, 115200, term);
 
                 log('> Conectando al Bootloader del ESP32...', 'info');
-                await loader.main_fn();
+                await loader.main_fn(); // Detect chip
 
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
                 log('> Stub cargado. Preparando escritura en flash...', 'info');
@@ -235,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     [{ data: binaryString, address: 0x10000 }],
                     'keep',
                     'keep',
-                    false,
+                    '40m',
                     true,
                     (fileIndex, written, total) => {
                         const percent = (written / total) * 100;
@@ -247,12 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log('> Resetting...', 'info');
 
-                // Hard reset
-                await transport.setDTR(false);
-                await transport.setRTS(true);
-                await new Promise(r => setTimeout(r, 100));
-                await transport.setRTS(false);
-                await transport.disconnect();
+                // Try hard reset
+                try {
+                    await transport.setDTR(false);
+                    await transport.setRTS(true);
+                    await new Promise(r => setTimeout(r, 100));
+                    await transport.setRTS(false);
+                    await transport.disconnect();
+                } catch (e) {
+                    console.warn('Reset returned error (ignoring):', e);
+                }
 
                 progressBar.style.width = '100%';
                 log('> ¡Actualización completada con éxito!', 'success');
