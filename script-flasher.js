@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Explicitly sync/main_fn
                 await loader.main();
 
+
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
 
                 // 3. Flash Data
@@ -174,4 +175,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
