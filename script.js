@@ -192,12 +192,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
-                // 2. Initialize ESPLoader
-                // Assuming ESPLoader is available globally from the imported bundle
-                // If using module, we might need to adjust or rely on window.ESPLoader
-                // NOTE: esptool-js bundle usually exposes 'ESPLoader' and 'Transport' to window or exports
+                // 2. Initialize ESPLoader via Dynamic Import
+                log('> Cargando librería esptool-js...', 'info');
 
-                // For this implementation, we assume the typical usage from the bundle
+                // Import ESPLoader and Transport from CDN
+                // Note: The bundle exports them as named exports or attaches to window depending on version.
+                // For v0.5.4 ESM usage:
+                const esptool = await import('https://unpkg.com/esptool-js@0.5.4/bundle.js');
+
+                // Fallback for different bundle structures
+                const ESPLoader = esptool.ESPLoader || window.ESPLoader;
+                const Transport = esptool.Transport || window.Transport;
+
+                if (!ESPLoader || !Transport) {
+                    throw new Error('No se pudo invocar las clases de esptool-js. Verifica la consola.');
+                }
+
                 const transport = new Transport(window.serialPort);
                 const term = {
                     clean: () => { },
@@ -205,32 +215,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     write: (s) => { }
                 };
 
+                // Loader config for ESP32
                 const loader = new ESPLoader(transport, 115200, term);
 
                 log('> Conectando al Bootloader del ESP32...', 'info');
-                await loader.main_fn(); // Detect chip
+                await loader.main_fn();
 
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
                 log('> Stub cargado. Preparando escritura en flash...', 'info');
 
-                // 3. Flash Data at 0x10000 (Standard for Arduino sketches without bootloader/partitions included)
-                // If the bin is a full image, use 0x0000. Assuming application only here: 0x10000
-                const flashOptions = {
-                    fileArray: [{ data: new TextDecoder("utf-8").decode(fileData), address: 0x10000 }],
-                    flashSize: 'keep',
-                    eraseAll: false,
-                    compress: true,
-                    reportProgress: (fileIndex, written, total) => {
-                        const percent = (written / total) * 100;
-                        progressBar.style.width = `${percent}%`;
-                        if (Math.floor(percent) % 20 === 0) log(`> Flaseando: ${Math.floor(percent)}%`);
-                    },
-                };
-
-                // Create a file wrapper that esptool-js expects (often expects string or specific format)
-                // The library is complex. A simplified "write_flash" approach:
-
-                // Converting Uint8Array to binary string for esptool-js v0.2
+                // 3. Flash Data
+                // Reading file content as binary string for esptool (required for string-based data)
                 let binaryString = "";
                 for (let i = 0; i < fileData.byteLength; i++) {
                     binaryString += String.fromCharCode(fileData[i]);
@@ -245,20 +240,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     (fileIndex, written, total) => {
                         const percent = (written / total) * 100;
                         progressBar.style.width = `${percent}%`;
+                        if (Math.floor(percent) % 20 === 0) log(`> Flaseando: ${Math.floor(percent)}%`);
                     },
                     (image) => log(`Hash de verificación: ${image}`)
                 );
 
                 log('> Resetting...', 'info');
+
+                // Hard reset
                 await transport.setDTR(false);
-                await transport.setRTS(true); // Reset
+                await transport.setRTS(true);
                 await new Promise(r => setTimeout(r, 100));
                 await transport.setRTS(false);
+                await transport.disconnect();
 
                 progressBar.style.width = '100%';
                 log('> ¡Actualización completada con éxito!', 'success');
                 flashBtn.innerText = 'Completado';
                 flashBtn.style.background = 'var(--secondary)';
+                flashBtn.disabled = false;
+
+                // Reset internal state
+                window.serialPort = null;
+                connectBtn.disabled = false;
+                connectBtn.innerText = 'Reconectar USB';
+                statusSpan.innerText = 'Estado: Finalizado';
+
 
             } catch (error) {
                 log(`> Error Crítico: ${error.message}`, 'error');
