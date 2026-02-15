@@ -1,17 +1,14 @@
-// Usando esptool version global (0.2.0) para máxima compatibilidad
-// import { ESPLoader, Transport } from "..."; // Comentado para usar versión global
+// Import ESPLoader and Transport directly as ES Modules
+import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.5.4/bundle.js";
 
 const BIN_PATH = 'sueloesp32.ino.bin';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Verificación de librería
-    if (!window.esptool) {
-        document.getElementById('console-log').innerHTML = '<p class="error">Error Crítico: Librería esptool no cargada. Revisa tu conexión a internet.</p>';
-        return;
-    }
-
-    const { ESPLoader, Transport } = window.esptool;
+    /*
+    // Verificación de librería (No necesaria con imports)
+    if (!window.esptool) { ... }
+    */
 
     // ... (existing code for UI elements)
     const connectBtn = document.getElementById('btn-connect-usb');
@@ -89,6 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 2. Initialize ESPLoader
                 log('> Verificando puerto serial (Transport)...', 'info');
 
+                // Polyfill/Shim check: Ensure getInfo exists
+                if (typeof serialPort.getInfo !== 'function') {
+                    // Try to shim it if missing? Or just fail. 
+                    // Usually Chrome gives it. If not, it's a browser issue.
+                    // WARNING: If using an old polyfill, it might be missing.
+                    console.warn('serialPort.getInfo is missing!');
+                }
+
                 const transport = new Transport(serialPort);
                 log('> Transport creado. Configurando Terminal...', 'info');
 
@@ -99,13 +104,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 // Loader config for ESP32
-                log('> Creando ESPLoader...', 'info');
-                const loader = new ESPLoader(transport, 115200, term);
+                // FIXED: v0.5.4 takes an Options Object, NOT positional args!
+                log('> Creando ESPLoader (v0.5.4 compliant)...', 'info');
+                const loader = new ESPLoader({
+                    transport: transport,
+                    baudrate: 115200,
+                    terminal: term
+                });
 
                 log('> Conectando al Bootloader del ESP32 (esto puede tardar)...', 'info');
 
                 // Explicitly sync/main_fn
-                await loader.main_fn();
+                await loader.main_fn({ debug: true });
 
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
 
