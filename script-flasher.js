@@ -42,17 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 serialPort = await navigator.serial.requestPort();
-                await serialPort.open({ baudRate: 115200 });
+                // NOTE: Do NOT open the port here.
+                // ESPLoader/Transport will open it internally when flashing.
 
-                statusSpan.innerText = 'Estado: Conectado ✅';
+                statusSpan.innerText = 'Estado: Dispositivo Seleccionado ✅';
                 statusSpan.style.color = 'var(--secondary)';
                 connectBtn.disabled = true;
-                connectBtn.innerText = 'Dispositivo Conectado';
+                connectBtn.innerText = 'Dispositivo Seleccionado';
                 flashBtn.disabled = false;
                 flashBtn.style.opacity = '1';
                 flashBtn.style.cursor = 'pointer';
 
-                log('> Puerto Serie Abierto. Dispositivo listo.', 'success');
+                log('> Puerto seleccionado. Listo para flashear.', 'success');
 
             } catch (error) {
                 log(`> Error de conexión: ${error.message}`, 'error');
