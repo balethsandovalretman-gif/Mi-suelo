@@ -1,9 +1,18 @@
-// Import ESPLoader and Transport directly as ES Modules
-import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.5.4/bundle.js";
+// Usando esptool version global (0.2.0) para máxima compatibilidad
+// import { ESPLoader, Transport } from "..."; // Comentado para usar versión global
 
 const BIN_PATH = 'sueloesp32.ino.bin';
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Verificación de librería
+    if (!window.esptool) {
+        document.getElementById('console-log').innerHTML = '<p class="error">Error Crítico: Librería esptool no cargada. Revisa tu conexión a internet.</p>';
+        return;
+    }
+
+    const { ESPLoader, Transport } = window.esptool;
+
     // ... (existing code for UI elements)
     const connectBtn = document.getElementById('btn-connect-usb');
     const flashBtn = document.getElementById('btn-flash');
@@ -78,12 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
                 // 2. Initialize ESPLoader
-                log('> Creando instancia de Transport...', 'info');
-
-                // Polyfill/Shim check: Ensure getInfo exists
-                if (typeof serialPort.getInfo !== 'function') {
-                    throw new Error('El puerto serial no soporta getInfo(). ¿Navegador obsoleto?');
-                }
+                log('> Verificando puerto serial (Transport)...', 'info');
 
                 const transport = new Transport(serialPort);
                 log('> Transport creado. Configurando Terminal...', 'info');
@@ -101,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 log('> Conectando al Bootloader del ESP32 (esto puede tardar)...', 'info');
 
                 // Explicitly sync/main_fn
-                await loader.main_fn({ debug: true });
+                await loader.main_fn();
 
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
 
