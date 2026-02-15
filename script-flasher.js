@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await loader.main();
 
 
-                log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
+                log(`> Chip Detectado: ${loader.chipName || 'ESP32'}. Stub cargado correctamente.`, 'success');
 
                 // 3. Flash Data
                 // Reading file content as binary string for esptool (required for string-based data)
