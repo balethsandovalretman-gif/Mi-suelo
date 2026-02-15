@@ -130,25 +130,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log("> Iniciando flasheo...", "info");
 
-                await loader.flashData(
-                    [
-                        {
-                            data: firmwareData, // Uint8Array
-                            address: 0x10000
-                        }
-                    ],
-                    {
-                        eraseAll: true,
-                        compress: true,
-                        onProgress: (written, total) => {
-                            const percent = Math.floor((written / total) * 100);
-                            progressBar.style.width = `${percent}%`;
-                            if (percent % 10 === 0) {
-                                log(`> Flasheando: ${percent}%`, "info");
-                            }
+                // v0.5.4 API: loader.writeFlash(options)
+                // - fileArray: [{data: binaryString, address}]
+                // - data MUST be a binary string (not Uint8Array)
+                // - compress MUST be true (library doesn't support uncompressed)
+                await loader.writeFlash({
+                    fileArray: [{ data: binaryString, address: 0x10000 }],
+                    flashSize: 'keep',
+                    flashMode: 'keep',
+                    flashFreq: '40m',
+                    eraseAll: false,
+                    compress: true,
+                    reportProgress: (fileIndex, written, total) => {
+                        const percent = Math.floor((written / total) * 100);
+                        progressBar.style.width = `${percent}%`;
+                        if (percent % 10 === 0) {
+                            log(`> Flasheando: ${percent}%`, "info");
                         }
                     }
-                );
+                });
 
                 log("> Flasheo completado con éxito ✅", "success");
 
