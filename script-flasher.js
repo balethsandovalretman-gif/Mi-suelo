@@ -1,10 +1,10 @@
-// Import ESPLoader and Transport directly as ES Modules (Using v0.2.0 for stability)
-import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.2.0/bundle.js";
+// Import ESPLoader and Transport directly as ES Modules
+import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.5.4/bundle.js";
 
 const BIN_PATH = 'sueloesp32.ino.bin';
 
 document.addEventListener('DOMContentLoaded', () => {
-
+    // ... (existing code for UI elements)
     const connectBtn = document.getElementById('btn-connect-usb');
     const flashBtn = document.getElementById('btn-flash');
     const statusSpan = document.getElementById('connection-status');
@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         consoleLog.appendChild(p);
         consoleLog.scrollTop = consoleLog.scrollHeight;
+        console.log(`[LOG ${type}] ${msg}`); // Also log to browser console
     }
+    // ... (connectBtn listener remains roughly same, assume unchanged lines match)
 
     if (connectBtn) {
         connectBtn.addEventListener('click', async () => {
@@ -58,12 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Explicitly check for getInfo to avoid "undefined reading getInfo" errors
-            if (!serialPort.getInfo) {
-                log('> Error: El objeto SerialPort no es válido (falta getInfo). Reinicia el navegador.', 'error');
-                return;
-            }
-
             flashBtn.disabled = true;
             flashBtn.innerText = 'Procesando...';
             progressContainer.style.display = 'block';
@@ -82,23 +78,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
                 // 2. Initialize ESPLoader
-                log('> Verificando puerto serial...', 'info');
+                log('> Creando instancia de Transport...', 'info');
+
+                // Polyfill/Shim check: Ensure getInfo exists
+                if (typeof serialPort.getInfo !== 'function') {
+                    throw new Error('El puerto serial no soporta getInfo(). ¿Navegador obsoleto?');
+                }
 
                 const transport = new Transport(serialPort);
+                log('> Transport creado. Configurando Terminal...', 'info');
+
                 const term = {
                     clean: () => { },
                     writeLine: (l) => log(l),
-                    write: (s) => { }
+                    write: (s) => console.log(s) // Log raw output to console
                 };
 
                 // Loader config for ESP32
+                log('> Creando ESPLoader...', 'info');
                 const loader = new ESPLoader(transport, 115200, term);
 
-                log('> Conectando al Bootloader del ESP32...', 'info');
-                await loader.main_fn(); // Detect chip
+                log('> Conectando al Bootloader del ESP32 (esto puede tardar)...', 'info');
+
+                // Explicitly sync/main_fn
+                await loader.main_fn({ debug: true });
 
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
-                log('> Stub cargado. Preparando escritura en flash...', 'info');
 
                 // 3. Flash Data
                 // Reading file content as binary string for esptool (required for string-based data)
