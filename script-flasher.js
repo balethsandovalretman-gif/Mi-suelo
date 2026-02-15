@@ -1,6 +1,5 @@
-
-// Import ESPLoader and Transport directly as ES Modules
-import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.5.4/bundle.js";
+// Import ESPLoader and Transport directly as ES Modules (Using v0.2.0 for stability)
+import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.2.0/bundle.js";
 
 const BIN_PATH = 'sueloesp32.ino.bin';
 
@@ -49,12 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 log(`> Error de conexión: ${error.message}`, 'error');
+                serialPort = null;
             }
         });
 
         flashBtn.addEventListener('click', async () => {
             if (!serialPort) {
                 log('> Error: No hay puerto seleccionado.', 'error');
+                return;
+            }
+
+            // Explicitly check for getInfo to avoid "undefined reading getInfo" errors
+            if (!serialPort.getInfo) {
+                log('> Error: El objeto SerialPort no es válido (falta getInfo). Reinicia el navegador.', 'error');
                 return;
             }
 
@@ -75,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
-                // Debug: Check Port
+                // 2. Initialize ESPLoader
                 log('> Verificando puerto serial...', 'info');
 
                 const transport = new Transport(serialPort);
