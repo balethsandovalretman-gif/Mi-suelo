@@ -1,4 +1,7 @@
 
+// Import ESPLoader and Transport directly as ES Modules
+import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.5.4/bundle.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 
     /* --- Scroll Reveal Animation --- */
@@ -194,19 +197,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
-                // 2. Initialize ESPLoader (Global scope from bundle.js)
-                const esptool = window.esptool;
-
-                if (!esptool) {
-                    throw new Error('Librería esptool-js no cargada en window.esptool. Revisa la consola.');
-                }
+                // 2. Initialize ESPLoader (Imported from Module)
 
                 // Debug: Check Port
                 log('> Verificando puerto serial...', 'info');
 
-                const Transport = esptool.Transport;
-                const ESPLoader = esptool.ESPLoader;
-
+                // Pass the native SerialPort object wrapper if needed, 
+                // but v0.2.0 Transport expects the device directly usually.
                 const transport = new Transport(window.serialPort);
                 const term = {
                     clean: () => { },
@@ -215,60 +212,63 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 // Loader config for ESP32
-                const loader = new ESPLoader(transport, 115200, term);
-
-                log('> Conectando al Bootloader del ESP32...', 'info');
-                await loader.main_fn(); // Detect chip
-
-                log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
-                log('> Stub cargado. Preparando escritura en flash...', 'info');
-
-                // 3. Flash Data
-                // Reading file content as binary string for esptool (required for string-based data)
-                let binaryString = "";
-                for (let i = 0; i < fileData.byteLength; i++) {
-                    binaryString += String.fromCharCode(fileData[i]);
-                }
-
-                await loader.write_flash(
-                    [{ data: binaryString, address: 0x10000 }],
-                    'keep',
-                    'keep',
-                    '40m',
-                    true,
-                    (fileIndex, written, total) => {
-                        const percent = (written / total) * 100;
-                        progressBar.style.width = `${percent}%`;
-                        if (Math.floor(percent) % 20 === 0) log(`> Flaseando: ${Math.floor(percent)}%`);
-                    },
-                    (image) => log(`Hash de verificación: ${image}`)
-                );
-
-                log('> Resetting...', 'info');
-
-                // Try hard reset
                 try {
-                    await transport.setDTR(false);
-                    await transport.setRTS(true);
-                    await new Promise(r => setTimeout(r, 100));
-                    await transport.setRTS(false);
-                    await transport.disconnect();
+                    const loader = new ESPLoader(transport, 115200, term);
+
+                    log('> Conectando al Bootloader del ESP32...', 'info');
+                    await loader.main_fn(); // Detect chip
+
+                    log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
+                    log('> Stub cargado. Preparando escritura en flash...', 'info');
+
+                    // 3. Flash Data
+                    // Reading file content as binary string for esptool (required for string-based data)
+                    let binaryString = "";
+                    for (let i = 0; i < fileData.byteLength; i++) {
+                        binaryString += String.fromCharCode(fileData[i]);
+                    }
+
+                    await loader.write_flash(
+                        [{ data: binaryString, address: 0x10000 }],
+                        'keep',
+                        'keep',
+                        '40m',
+                        true,
+                        (fileIndex, written, total) => {
+                            const percent = (written / total) * 100;
+                            progressBar.style.width = `${percent}%`;
+                            if (Math.floor(percent) % 20 === 0) log(`> Flaseando: ${Math.floor(percent)}%`);
+                        },
+                        (image) => log(`Hash de verificación: ${image}`)
+                    );
+
+                    log('> Resetting...', 'info');
+
+                    // Try hard reset
+                    try {
+                        await transport.setDTR(false);
+                        await transport.setRTS(true);
+                        await new Promise(r => setTimeout(r, 100));
+                        await transport.setRTS(false);
+                        await transport.disconnect();
+                    } catch (e) {
+                        console.warn('Reset returned error (ignoring):', e);
+                    }
+
+                    progressBar.style.width = '100%';
+                    log('> ¡Actualización completada con éxito!', 'success');
+                    flashBtn.innerText = 'Completado';
+                    flashBtn.style.background = 'var(--secondary)';
+                    flashBtn.disabled = false;
+
+                    // Reset internal state
+                    window.serialPort = null;
+                    connectBtn.disabled = false;
+                    connectBtn.innerText = 'Reconectar USB';
+                    statusSpan.innerText = 'Estado: Finalizado';
                 } catch (e) {
-                    console.warn('Reset returned error (ignoring):', e);
+                    throw new Error('Error en ESPLoader: ' + e.message);
                 }
-
-                progressBar.style.width = '100%';
-                log('> ¡Actualización completada con éxito!', 'success');
-                flashBtn.innerText = 'Completado';
-                flashBtn.style.background = 'var(--secondary)';
-                flashBtn.disabled = false;
-
-                // Reset internal state
-                window.serialPort = null;
-                connectBtn.disabled = false;
-                connectBtn.innerText = 'Reconectar USB';
-                statusSpan.innerText = 'Estado: Finalizado';
-
 
             } catch (error) {
                 log(`> Error Crítico: ${error.message}`, 'error');
