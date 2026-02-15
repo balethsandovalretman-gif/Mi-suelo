@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 log('> Conectando al Bootloader del ESP32 (esto puede tardar)...', 'info');
 
                 // Explicitly sync/main_fn
-                await loader.main_fn({ debug: true });
+                await loader.main();
 
                 log('> Chip Detectado: ' + await loader.chip.get_chip_description(loader.ism), 'success');
 
@@ -174,3 +174,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
