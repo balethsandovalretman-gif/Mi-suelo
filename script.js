@@ -1,4 +1,6 @@
 
+import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.2.2/bundle.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 
     /* --- Scroll Reveal Animation --- */
@@ -194,14 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
-                // 2. Initialize ESPLoader (Global scope from bundle.js)
-                if (typeof esptool === 'undefined') {
-                    throw new Error('Librería esptool-js no cargada. Revisa tu conexión a internet.');
-                }
+                // 2. Initialize ESPLoader (Imported from Module)
 
-                // Compatibility for v0.2.0 bundle which exposes classes on the 'esptool' global object
-                const Transport = esptool.Transport;
-                const ESPLoader = esptool.ESPLoader;
+                // Debug: Check Port
+                log('> Verificando puerto serial...', 'info');
 
                 // Pass the native SerialPort object wrapper if needed, 
                 // but v0.2.0 Transport expects the device directly usually.
