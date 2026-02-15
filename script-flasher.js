@@ -128,19 +128,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     binaryString += String.fromCharCode(fileData[i]);
                 }
 
-                await loader.write_flash(
-                    [{ data: binaryString, address: 0x10000 }],
-                    'keep',
-                    'keep',
-                    '40m',
-                    true,
-                    (fileIndex, written, total) => {
-                        const percent = (written / total) * 100;
-                        progressBar.style.width = `${percent}%`;
-                        if (Math.floor(percent) % 20 === 0) log(`> Flaseando: ${Math.floor(percent)}%`);
-                    },
-                    (image) => log(`Hash de verificación: ${image}`)
+                log("> Iniciando flasheo...", "info");
+
+                await loader.flashData(
+                    [
+                        {
+                            data: firmwareData, // Uint8Array
+                            address: 0x10000
+                        }
+                    ],
+                    {
+                        eraseAll: true,
+                        compress: true,
+                        onProgress: (written, total) => {
+                            const percent = Math.floor((written / total) * 100);
+                            progressBar.style.width = `${percent}%`;
+                            if (percent % 10 === 0) {
+                                log(`> Flasheando: ${percent}%`, "info");
+                            }
+                        }
+                    }
                 );
+
+                log("> Flasheo completado con éxito ✅", "success");
 
                 log('> Resetting...', 'info');
 
