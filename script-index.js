@@ -32,6 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* --- Mobile Menu Toggle --- */
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const nav = document.querySelector('nav');
+    if (mobileBtn && nav) {
+        mobileBtn.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            mobileBtn.classList.toggle('active');
+        });
+        // Close menu on link click
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('open');
+                mobileBtn.classList.remove('active');
+            });
+        });
+    }
+
     /* --- Hero Card 3D Tilt Effect (Index only) --- */
     const heroSection = document.getElementById('hero');
     const mainCard = document.querySelector('.iso-card.main-card');
@@ -57,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
     /* --- Live Data Simulation --- */
     const humidityVal = document.getElementById('val-humidity');
     const tempVal = document.getElementById('val-temp');
+    const lightVal = document.getElementById('val-light');
     const chartBars = document.querySelectorAll('.chart-bar');
+
+    const lightStates = ['Normal', 'Alta', 'Baja', 'Óptima'];
 
     if (humidityVal) {
         setInterval(() => {
@@ -67,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (tempVal) {
                 const t = (Math.random() * (26 - 22) + 22).toFixed(1);
                 tempVal.innerText = `${t}°C`;
+            }
+
+            if (lightVal) {
+                lightVal.innerText = lightStates[Math.floor(Math.random() * lightStates.length)];
             }
 
             chartBars.forEach(bar => {
@@ -84,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const animateStats = () => {
         if (hasAnimatedStats) return;
 
-        const statsSection = document.getElementById('problema');
+        const statsSection = document.getElementById('beneficios');
 
         if (statsSection) {
             const triggerBottom = window.innerHeight / 5 * 4;
@@ -94,28 +118,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 stats.forEach(stat => {
                     const target = +stat.getAttribute('data-target');
                     if (!target) return;
-                    const suffix = stat.innerText.replace(/[0-9]/g, '');
+                    const suffix = stat.getAttribute('data-suffix') || '';
 
                     const updateCount = () => {
                         const count = +stat.innerText.replace(/[^0-9]/g, '');
-                        const inc = target / 100;
+                        const inc = target / 80;
 
                         if (count < target) {
                             stat.innerText = Math.ceil(count + inc) + suffix;
-                            setTimeout(updateCount, 20);
+                            requestAnimationFrame(updateCount);
                         } else {
                             stat.innerText = target + suffix;
                         }
                     };
                     stat.innerText = '0' + suffix;
-                    updateCount();
+                    requestAnimationFrame(updateCount);
                 });
                 hasAnimatedStats = true;
             }
         }
     };
 
-    if (document.getElementById('problema')) {
+    if (document.getElementById('beneficios')) {
         window.addEventListener('scroll', animateStats);
+        animateStats(); // check on load too
+    }
+
+    /* --- Active nav link on scroll --- */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a:not(.nav-btn)');
+
+    if (sections.length && navLinks.length) {
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
     }
 });
