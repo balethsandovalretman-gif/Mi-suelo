@@ -1,7 +1,4 @@
 
-
-import "https://unpkg.com/esptool-js@0.2.2/bundle.js";
-
 document.addEventListener('DOMContentLoaded', () => {
 
     /* --- Scroll Reveal Animation --- */
@@ -197,24 +194,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 log(`> Archivo cargado (${fileData.length} bytes). Inicializando flasheo...`);
 
-                // 2. Initialize ESPLoader (Imported from Module)
+                // 2. Initialize ESPLoader (Global scope from bundle.js)
+                const esptool = window.esptool;
+
+                if (!esptool) {
+                    throw new Error('Librería esptool-js no cargada en window.esptool. Revisa la consola.');
+                }
 
                 // Debug: Check Port
                 log('> Verificando puerto serial...', 'info');
 
-                // Use window.esptool directly
-                const esptool = window.esptool;
-                if (!esptool) {
-                    // Last ditch effort: try dynamic import fallback if window.esptool missing?
-                    // No, let's just fail clearly.
-                    throw new Error('No se encontró window.esptool. La carga del módulo falló.');
-                }
-
                 const Transport = esptool.Transport;
                 const ESPLoader = esptool.ESPLoader;
 
-                // Pass the native SerialPort object wrapper if needed, 
-                // but v0.2.0 Transport expects the device directly usually.
                 const transport = new Transport(window.serialPort);
                 const term = {
                     clean: () => { },
@@ -287,4 +279,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
