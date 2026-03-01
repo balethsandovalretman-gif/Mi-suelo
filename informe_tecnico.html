@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Técnico — MiSuelo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f6f8fa;
+            --card: #ffffff;
+            --primary: #2E7D32;
+            --primary-light: rgba(46, 125, 50, 0.08);
+            --accent: #FF7043;
+            --text: #1a2e1a;
+            --text-light: #5a6b5a;
+            --border: rgba(0, 0, 0, 0.06);
+            --code-bg: #f0f4f0;
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* ── Cover ── */
+        .cover {
+            background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2d 100%);
+            color: white;
+            padding: 80px 60px;
+            text-align: center;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .cover .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .cover .meta {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            opacity: 0.6;
+        }
+
+        /* ── TOC ── */
+        .toc {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            margin: 2rem 5%;
+            border: 1px solid var(--border);
+        }
+
+        .toc h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .toc ol {
+            padding-left: 1.5rem;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        /* ── Sections ── */
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            page-break-inside: avoid;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section h2 .emoji {
+            font-size: 1.6rem;
+            margin-right: 0.5rem;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem;
+            color: var(--primary);
+        }
+
+        .section h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 1rem 0 0.3rem;
+        }
+
+        .section p,
+        .section li {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .section ul,
+        .section ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section li {
+            margin-bottom: 0.3rem;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        /* ── Code ── */
+        code {
+            background: var(--code-bg);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.88rem;
+            font-family: 'Courier New', monospace;
+            color: var(--primary);
+        }
+
+        pre {
+            background: #0d1f0d;
+            color: #b9f6ca;
+            padding: 1.2rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            text-align: left;
+            padding: 10px 14px;
+        }
+
+        td {
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover td {
+            background: rgba(46, 125, 50, 0.03);
+        }
+
+        /* ── Info boxes ── */
+        .info-box {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.2rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+        }
+
+        .info-box.warning {
+            background: rgba(255, 152, 0, 0.08);
+            border-left-color: #FF9800;
+        }
+
+        .info-box.formula {
+            background: rgba(33, 150, 243, 0.06);
+            border-left-color: #2196F3;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 0.92rem;
+        }
+
+        /* ── Flowchart arrows ── */
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .flow-step {
+            background: var(--primary-light);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .flow-arrow {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        /* ── Print ── */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .cover {
+                padding: 50px 40px;
+            }
+
+            .section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            .toc {
+                box-shadow: none;
+            }
+        }
+
+        /* ── Footer ── */
+        .report-footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════ PORTADA ═══════════════════ -->
+    <div class="cover">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🌱</div>
+        <h1>MiSuelo</h1>
+        <p class="subtitle">Informe Técnico Completo de la Aplicación</p>
+        <p style="opacity: 0.5; margin-bottom: 2rem;">Monitoreo Agrícola Inteligente con IoT e IA</p>
+        <div class="meta">
+            <span>📅 Marzo 2026</span>
+            <span>👥 Bryan, Donny, Baneliz</span>
+            <span>📱 Android (Kotlin)</span>
+            <span>🔌 ESP32 (C++)</span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ TABLA DE CONTENIDO ═══════════════════ -->
+    <div class="content" style="margin-top: 2rem;">
+        <div class="toc">
+            <h2>📋 Tabla de Contenido</h2>
+            <ol>
+                <li><a href="#sec1">Descripción General del Sistema</a></li>
+                <li><a href="#sec2">Arquitectura del Hardware — ESP32</a></li>
+                <li><a href="#sec3">Protocolo Bluetooth BLE</a></li>
+                <li><a href="#sec4">Pantalla de Conexión Bluetooth</a></li>
+                <li><a href="#sec5">Pantalla Monitor — Lista de Cultivos</a></li>
+                <li><a href="#sec6">Detalle de Cultivo — Escaneo y Métricas</a></li>
+                <li><a href="#sec7">Historial — Gráficas y Tendencias</a></li>
+                <li><a href="#sec8">Análisis Inteligente — Predicciones y Plan de Riego</a></li>
+                <li><a href="#sec9">Alertas — Generación y Resolución Automática</a></li>
+                <li><a href="#sec10">Agente IA — Chat con Gemini</a></li>
+                <li><a href="#sec11">Respaldo de Datos — Exportar e Importar</a></li>
+                <li><a href="#sec12">Base de Datos y Entidades</a></li>
+                <li><a href="#sec13">Cultivos Soportados y Rangos de Referencia</a></li>
+                <li><a href="#sec14">Página Web del Proyecto</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- ═══════════════════ 1. DESCRIPCIÓN GENERAL ═══════════════════ -->
+        <div class="section" id="sec1">
+            <h2><span class="emoji">🌍</span> 1. Descripción General del Sistema</h2>
+            <p>MiSuelo es un sistema de monitoreo agrícola inteligente compuesto por un <strong>sensor de suelo basado
+                    en ESP32</strong> y una <strong>aplicación móvil Android</strong>. El sistema permite medir en
+                tiempo real cuatro métricas del suelo:</p>
+            <ul>
+                <li><strong>💧 Humedad del suelo</strong> — porcentaje de agua presente</li>
+                <li><strong>🌡️ Temperatura del suelo</strong> — en grados Celsius</li>
+                <li><strong>⚗️ pH del suelo</strong> — nivel de acidez/alcalinidad</li>
+                <li><strong>☀️ Intensidad de luz</strong> — en lux</li>
+            </ul>
+            <p>La comunicación entre el sensor y el celular se realiza mediante <strong>Bluetooth Low Energy
+                    (BLE)</strong>, sin necesidad de WiFi ni internet para la captura de datos.</p>
+
+            <h3>Stack Tecnológico</h3>
+            <table>
+                <tr>
+                    <th>Componente</th>
+                    <th>Tecnología</th>
+                </tr>
+                <tr>
+                    <td>Aplicación Móvil</td>
+                    <td>Android (Kotlin), Room DB, Material Design, MPAndroidChart</td>
+                </tr>
+                <tr>
+                    <td>Sensor</td>
+                    <td>ESP32, Arduino C++, BLE UART (NUS)</td>
+                </tr>
+                <tr>
+                    <td>Inteligencia Artificial</td>
+                    <td>Google Gemini API (multimodal: texto + imágenes)</td>
+                </tr>
+                <tr>
+                    <td>Página Web</td>
+                    <td>HTML, CSS, JavaScript, Web Serial API</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════ 2. ESP32 ═══════════════════ -->
+        <div class="section" id="sec2">
+            <h2><span class="emoji">🔌</span> 2. Arquitectura del Hardware — ESP32</h2>
+            <p>El firmware del ESP32 (<code>esp32_ble_uart.ino</code>) implementa un servidor BLE UART usando el
+                protocolo <strong>Nordic UART Service (NUS)</strong>.</p>
+
+            <h3>Sensores Conectados</h3>
+            <table>
+                <tr>
+                    <th>Sensor</th>
+                    <th>Medición</th>
+                    <th>Rango</th>
+                </tr>
+                <tr>
+                    <td>Sensor capacitivo de humedad</td>
+                    <td>Humedad del suelo</td>
+                    <td>0 – 100%</td>
+                </tr>
+                <tr>
+                    <td>DS18B20 / NTC</td>
+                    <td>Temperatura del suelo</td>
+                    <td>0 – 50°C</td>
+                </tr>
+                <tr>
+                    <td>Módulo de pH analógico</td>
+                    <td>pH del suelo</td>
+                    <td>0 – 14</td>
+                </tr>
+                <tr>
+                    <td>LDR (fotorresistencia)</td>
+                    <td>Intensidad de luz</td>
+                    <td>0 – 1024+ lx</td>
+                </tr>
+            </table>
+
+            <h3>Simulación Realista (Modo Desarrollo)</h3>
+            <p>Para pruebas, el firmware incluye un ciclo de <strong>12 fases</strong> que simula un escenario agrícola
+                real:</p>
+            <table>
+                <tr>
+                    <th>Fase</th>
+                    <th>Escáneos</th>
+                    <th>Escenario</th>
+                    <th>Valores Simulados</th>
+                </tr>
+                <tr>
+                    <td>1 ⚠️</td>
+                    <td>0 – 2</td>
+                    <td>Suelo con problemas</td>
+                    <td>Humedad: 28-38%, Temp: 30-33°C, pH: 7.2-7.8</td>
+                </tr>
+                <tr>
+                    <td>2 🔄</td>
+                    <td>3 – 5</td>
+                    <td>Recuperación tras riego</td>
+                    <td>Humedad: 48-62%, Temp: 26-28°C, pH: 6.3-6.8</td>
+                </tr>
+                <tr>
+                    <td>3 ✅</td>
+                    <td>6 – 8</td>
+                    <td>Valores óptimos</td>
+                    <td>Humedad: 68-72%, Temp: 23-24°C, pH: 6.0-6.2</td>
+                </tr>
+                <tr>
+                    <td>4 📊</td>
+                    <td>9 – 11</td>
+                    <td>Variaciones naturales</td>
+                    <td>Humedad: 58-65%, Temp: 25-27°C, pH: 6.3-6.5</td>
+                </tr>
+            </table>
+            <p>Cada valor incluye un <strong>jitter aleatorio</strong> (±2% humedad, ±0.5°C temp, ±0.15 pH, ±30 lx luz)
+                para que las lecturas se vean naturales.</p>
+        </div>
+
+        <!-- ═══════════════════ 3. PROTOCOLO BLE ═══════════════════ -->
+        <div class="section" id="sec3">
+            <h2><span class="emoji">📶</span> 3. Protocolo Bluetooth BLE</h2>
+            <p>La comunicación utiliza el protocolo <strong>Nordic UART Service (NUS)</strong>, un estándar para
+                transmisión de datos seriales por BLE.</p>
+
+            <h3>UUIDs del Servicio</h3>
+            <table>
+                <tr>
+                    <th>Elemento</th>
+                    <th>UUID</th>
+                    <th>Función</th>
+                </tr>
+                <tr>
+                    <td>Servicio NUS</td>
+                    <td><code>6E400001-B5A3-F393-E0A9-E50E24DCCA9E</code></td>
+                    <td>Servicio principal UART</td>
+                </tr>
+                <tr>
+                    <td>RX (escritura)</td>
+                    <td><code>6E400002-...</code></td>
+                    <td>App → ESP32 (enviar comandos)</td>
+                </tr>
+                <tr>
+                    <td>TX (notificación)</td>
+                    <td><code>6E400003-...</code></td>
+                    <td>ESP32 → App (recibir datos)</td>
+                </tr>
+            </table>
+
+            <h3>Flujo de Comunicación</h3>
+            <div class="flow">
+                <div class="flow-step">App envía<br><code>"SCAN"</code></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">ESP32 lee<br>sensores</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">JSON en<br>chunks de 20 bytes</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">Marcador<br><code>"END"</code></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-step">App ensambla<br>JSON completo</div>
+            </div>
+
+            <h3>Formato del Payload JSON</h3>
+            <pre><code>{"humidity":65.3,"temperature":24.5,"ph":6.2,"light":520}</code></pre>
+
+            <div class="info-box">
+                <p><strong>💡 Chunking:</strong> BLE limita los paquetes a ~20 bytes. El ESP32 divide el JSON en
+                    fragmentos de 20 bytes y los envía secuencialmente con un delay de 20ms entre cada uno. La app
+                    acumula los fragmentos hasta recibir el marcador <code>"END"</code>, momento en el cual ensambla y
+                    parsea el JSON completo.</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════ 4. PANTALLA CONECTAR ═══════════════════ -->
+        <div class="section" id="sec4">
+            <h2><span class="emoji">🔵</span> 4. Pantalla de Conexión Bluetooth</h2>
+            <p>La conexión se gestiona desde <code>MainActivity.kt</code> usando la clase
+                <code>GestorBluetoothGatt</code>.</p>
+
+            <h3>Proceso de Conexión</h3>
+            <ol>
+                <li><strong>Icono Bluetooth</strong> en la barra superior — el usuario lo toca para iniciar la búsqueda
+                </li>
+                <li><strong>Escaneo BLE</strong> — la app busca dispositivos que anuncien el servicio NUS</li>
+                <li><strong>Conexión automática</strong> — al encontrar el ESP32, se conecta y descubre los servicios
+                    GATT</li>
+                <li><strong>Habilitación de notificaciones</strong> — suscribe a la característica TX para recibir datos
+                </li>
+            </ol>
+
+            <h3>Estados Visuales</h3>
+            <table>
+                <tr>
+                    <th>Indicador</th>
+                    <th>Estado</th>
+                    <th>Significado</th>
+                </tr>
+                <tr>
+                    <td>🟢 Verde</td>
+                    <td>Conectado</td>
+                    <td>El sensor está listo para escanear</td>
+                </tr>
+                <tr>
+                    <td>🟡 Amarillo</td>
+                    <td>Buscando</td>
+                    <td>Escaneando dispositivos BLE cercanos</td>
+                </tr>
+                <tr>
+                    <td>⚫ Gris</td>
+                    <td>Desconectado</td>
+                    <td>No hay conexión activa</td>
+                </tr>
+            </table>
+
+            <h3>Permisos Requeridos</h3>
+            <ul>
+                <li><code>BLUETOOTH_SCAN</code> y <code>BLUETOOTH_CONNECT</code> (Android 12+)</li>
+                <li><code>ACCESS_FINE_LOCATION</code> (versiones anteriores a Android 12)</li>
+            </ul>
+
+            <h3>Almacenamiento de Dispositivo</h3>
+            <p>Al conectarse, la app guarda el dispositivo en la tabla <code>DISPOSITIVO</code> de la base de datos con
+                su nombre, dirección MAC, estado y contador de conexiones. Archivo: <code>DeviceStorage.kt</code>.</p>
+        </div>
+
+        <!-- ═══════════════════ 5. MONITOR ═══════════════════ -->
+        <div class="section" id="sec5">
+            <h2><span class="emoji">📋</span> 5. Pantalla Monitor — Lista de Cultivos</h2>
+            <p>La pantalla Monitor (<code>MonitorFragment.kt</code>) es la vista principal de la app. Muestra:</p>
+
+            <h3>Componentes</h3>
+            <ul>
+                <li><strong>Tarjeta de Clima</strong> — Información meteorológica real obtenida via API (OpenWeatherMap)
+                    usando la ubicación GPS del usuario. Muestra temperatura ambiente, humedad del aire, condición
+                    climática e ícono.</li>
+                <li><strong>Lista de Cultivos</strong> — Cada cultivo registrado aparece como una tarjeta con su nombre,
+                    tipo y última lectura de sensor.</li>
+                <li><strong>Botón "+" (FAB)</strong> — Abre el diálogo para agregar un nuevo cultivo.</li>
+            </ul>
+
+            <h3>Agregar un Cultivo</h3>
+            <p>Al presionar "+", se abre <code>AgregarCultivoDialogFragment.kt</code>:</p>
+            <ol>
+                <li>El usuario ingresa: <strong>nombre del cultivo</strong>, <strong>tipo</strong> (Frijol, Tomate,
+                    Arroz, Maíz, Chiltoma) y <strong>descripción</strong> opcional</li>
+                <li>La app valida que el nombre sea <strong>único</strong> para el dispositivo seleccionado</li>
+                <li>Se crea automáticamente un registro de <strong>umbrales</strong> preconfigurados según el tipo de
+                    cultivo (via <code>CropPresets.kt</code>)</li>
+                <li>El cultivo queda asociado al dispositivo ESP32 conectado</li>
+            </ol>
+
+            <h3>Tarjeta de Cultivo</h3>
+            <p>Cada tarjeta muestra la última lectura del sensor con las 4 métricas. Al tocar una tarjeta, se navega al
+                <strong>Detalle del Cultivo</strong>.</p>
+        </div>
+
+        <!-- ═══════════════════ 6. DETALLE DE CULTIVO ═══════════════════ -->
+        <div class="section" id="sec6">
+            <h2><span class="emoji">🌿</span> 6. Detalle de Cultivo — Escaneo y Métricas</h2>
+            <p>El fragmento <code>CultivoDetailFragment.kt</code> es la pantalla más compleja de la app (865 líneas).
+                Aquí el usuario interactúa con su cultivo.</p>
+
+            <h3>Tarjetas de Métricas</h3>
+            <p>Se muestran 4 tarjetas individuales usando <code>PlaceholderMetricsAdapter</code>, una para cada métrica.
+                Cada tarjeta muestra:</p>
+            <ul>
+                <li>Icono y nombre de la métrica (💧 Humedad, 🌡️ Temperatura, ⚗️ pH, ☀️ Luz)</li>
+                <li>Valor actual medido</li>
+                <li>Rango ideal según el tipo de cultivo</li>
+                <li>Indicador visual de estado (color verde si normal, rojo si fuera de rango)</li>
+            </ul>
+            <p><strong>Al tocar una tarjeta de métrica</strong>, se abre un <code>MetricInfoBottomSheet</code> con
+                información detallada sobre qué significa esa métrica, cuál es el rango ideal y recomendaciones.</p>
+
+            <h3>Proceso de Escaneo</h3>
+            <p>La función <code>initiateScan()</code> gestiona todo el flujo BLE:</p>
+            <ol>
+                <li><strong>Verificación</strong> — Comprueba que el ESP32 esté conectado</li>
+                <li><strong>Diálogo de progreso</strong> — Muestra un diálogo con animación mientras escanea</li>
+                <li><strong>Conexión GATT</strong> — Se conecta directamente al dispositivo guardado</li>
+                <li><strong>Descubrimiento de servicios</strong> — Encuentra el servicio NUS y sus características</li>
+                <li><strong>Suscripción a TX</strong> — Habilita notificaciones para recibir datos</li>
+                <li><strong>Envío de "SCAN"</strong> — Escribe el comando en la característica RX</li>
+                <li><strong>Recepción de chunks</strong> — Acumula fragmentos en un buffer hasta recibir "END"</li>
+                <li><strong>Parseo JSON</strong> — Extrae: <code>humidity</code>, <code>temperature</code>,
+                    <code>ph</code>, <code>light</code></li>
+                <li><strong>Guardado en DB</strong> — Inserta una nueva <code>LecturaSensor</code></li>
+                <li><strong>Sincronización de alertas</strong> — Llama a <code>syncAlertsForCultivo()</code> con los
+                    valores actuales</li>
+                <li><strong>Actualización UI</strong> — Refresca las tarjetas de métricas</li>
+            </ol>
+
+            <h3>Comparación con Referencia</h3>
+            <p>La función <code>compareWithReference()</code> compara los valores leídos contra los rangos del archivo
+                <code>cultivos_reference.json</code>. Si alguna métrica sale del rango, genera un mensaje descriptivo
+                como:</p>
+            <pre><code>Humedad baja: 38.0% (mín 60%)
+Temperatura alta: 33.5°C (máx 28°C)</code></pre>
+
+            <h3>Botones Disponibles</h3>
+            <table>
+                <tr>
+                    <th>Botón</th>
+                    <th>Función</th>
+                </tr>
+                <tr>
+                    <td>🔍 Escanear</td>
+                    <td>Inicia un nuevo escaneo BLE del sensor</td>
+                </tr>
+                <tr>
+                    <td>🗑️ Eliminar</td>
+                    <td>Elimina el cultivo y todas sus lecturas (con confirmación)</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════ 7. HISTORIAL ═══════════════════ -->
+        <div class="section" id="sec7">
+            <h2><span class="emoji">📊</span> 7. Historial — Gráficas y Tendencias</h2>
+            <p>El fragmento <code>HistorialFragment.kt</code> (685 líneas) proporciona visualización histórica de los
+                datos del sensor usando la librería <strong>MPAndroidChart</strong>.</p>
+
+            <h3>Controles</h3>
+            <ul>
+                <li><strong>Selector de cultivo</strong> — Spinner para elegir qué cultivo visualizar</li>
+                <li><strong>Filtro de período</strong> — Botones: Hoy, 7 días, 30 días, Todo</li>
+            </ul>
+
+            <h3>Gráficas Generadas</h3>
+            <table>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Tipo de Gráfica</th>
+                    <th>Color</th>
+                    <th>Rango Ideal Visualizado</th>
+                </tr>
+                <tr>
+                    <td>💧 Humedad</td>
+                    <td>Barras (BarChart)</td>
+                    <td>Azul #2196F3</td>
+                    <td>Líneas límite min/max</td>
+                </tr>
+                <tr>
+                    <td>🌡️ Temperatura</td>
+                    <td>Línea (LineChart)</td>
+                    <td>Naranja #FF7043</td>
+                    <td>Líneas límite min/max</td>
+                </tr>
+                <tr>
+                    <td>⚗️ pH</td>
+                    <td>Barras (BarChart)</td>
+                    <td>Púrpura #7B1FA2</td>
+                    <td>Líneas límite min/max</td>
+                </tr>
+                <tr>
+                    <td>☀️ Luz</td>
+                    <td>Línea (LineChart)</td>
+                    <td>Amarillo #F9A825</td>
+                    <td>Líneas límite min/max</td>
+                </tr>
+            </table>
+
+            <h3>Cómo se Calculan las Tendencias</h3>
+            <p>La función <code>populateSummaryCard()</code> calcula el resumen comparando la <strong>primera
+                    lectura</strong> vs la <strong>última lectura</strong> del período seleccionado:</p>
+            <ul>
+                <li><strong>Delta (Δ)</strong> — Diferencia entre la lectura más reciente y la primera</li>
+                <li><strong>Flecha de tendencia</strong> — ↑ (subiendo) o ↓ (bajando) con color verde/rojo según si la
+                    mejora es positiva o negativa</li>
+                <li>Para humedad: subir es ✅ bueno (si estaba baja)</li>
+                <li>Para temperatura: depende de si estaba alta o baja</li>
+            </ul>
+
+            <h3>Líneas de Rango Ideal</h3>
+            <p>Cada gráfica muestra líneas punteadas horizontales representando el rango mínimo y máximo ideal para el
+                cultivo seleccionado. Los valores vienen del archivo <code>cultivos_reference.json</code>.</p>
+
+            <h3>Carrusel de Lecturas Recientes</h3>
+            <p>Un RecyclerView horizontal muestra tarjetas mini con las últimas lecturas, indicando la hora relativa
+                ("Hace 5 min", "Hace 2 horas", etc.).</p>
+        </div>
+
+        <!-- ═══════════════════ 8. ANÁLISIS INTELIGENTE ═══════════════════ -->
+        <div class="section" id="sec8">
+            <h2><span class="emoji">🔬</span> 8. Análisis Inteligente — Predicciones y Plan de Riego</h2>
+            <p>El fragmento <code>AnalisisFragment.kt</code> presenta un análisis visual del estado del cultivo con tres
+                componentes principales.</p>
+
+            <h3>8.1 Tarjeta de Salud General</h3>
+            <p>Evalúa las 4 métricas contra los rangos de referencia y muestra:</p>
+            <ul>
+                <li>Un <strong>emoji indicador</strong>: 😊 Excelente, 🙂 Bueno, 😐 Regular, 😟 Necesita atención</li>
+                <li>4 <strong>mini-tarjetas coloreadas</strong> para cada métrica con su estado individual</li>
+            </ul>
+
+            <h3>8.2 Tarjeta de Predicción — "¿Qué va a pasar?"</h3>
+            <p>Usa <code>HumidityPredictor.kt</code> para predecir cuándo la humedad llegará al nivel crítico.</p>
+
+            <h4>Algoritmo: Regresión Lineal</h4>
+            <div class="info-box formula">
+                <p><strong>Fórmula de regresión lineal:</strong></p>
+                <p><code>pendiente (m) = (n × ΣXY − ΣX × ΣY) / (n × ΣX² − (ΣX)²)</code></p>
+                <p>Donde X = tiempo en horas desde la lectura más antigua, Y = humedad (%)</p>
+            </div>
+            <ul>
+                <li>Toma las <strong>últimas 20 lecturas</strong> con humedad y timestamp válidos</li>
+                <li>Aplica <strong>regresión lineal simple</strong> para calcular la tasa de cambio por hora</li>
+                <li>La <strong>tendencia</strong> se clasifica como: DESCENDENTE (pendiente < -0.5), ASCENDENTE (> 0.5),
+                        ESTABLE</li>
+                <li>Si la humedad está descendiendo, calcula:
+                    <code>horas hasta crítico = (humedad_actual − umbral_mín) / |pendiente|</code></li>
+                <li>Máximo de predicción: <strong>168 horas (7 días)</strong></li>
+            </ul>
+
+            <h3>8.3 Tarjeta de Acción — "¿Qué debo hacer?"</h3>
+            <p>Usa <code>IrrigationAdvisor.kt</code> para calcular cuánta agua aplicar y cuándo.</p>
+
+            <h4>Fórmula de Cálculo de Agua</h4>
+            <div class="info-box formula">
+                <p><strong>Agua (L) = Área (m²) × Profundidad raíz (m) × Déficit (decimal) × Factor suelo ×
+                        1000</strong></p>
+                <p>Valores por defecto: Área = 10 m², Profundidad = 0.20 m, Suelo = Franco (factor 1.0)</p>
+            </div>
+
+            <h4>Niveles de Urgencia</h4>
+            <table>
+                <tr>
+                    <th>Urgencia</th>
+                    <th>Condición</th>
+                    <th>Acción</th>
+                </tr>
+                <tr>
+                    <td>🔴 CRÍTICA</td>
+                    <td>Humedad ≤ 85% del mínimo</td>
+                    <td>"Riego urgente — regar inmediatamente"</td>
+                </tr>
+                <tr>
+                    <td>🟠 ALTA</td>
+                    <td>Humedad ≤ mínimo</td>
+                    <td>"Riego necesario — lo antes posible"</td>
+                </tr>
+                <tr>
+                    <td>🟡 MODERADA</td>
+                    <td>Déficit ≥ 15 puntos</td>
+                    <td>"Programar riego"</td>
+                </tr>
+                <tr>
+                    <td>🟢 BAJA</td>
+                    <td>Déficit ≥ 5 puntos</td>
+                    <td>"Riego ligero"</td>
+                </tr>
+                <tr>
+                    <td>⚪ NINGUNA</td>
+                    <td>Dentro del rango</td>
+                    <td>"No requerido"</td>
+                </tr>
+            </table>
+
+            <h4>Horario Ideal de Riego</h4>
+            <p>Se calcula según la urgencia y la hora actual:</p>
+            <ul>
+                <li><strong>Crítica:</strong> "Inmediatamente"</li>
+                <li><strong>Alta:</strong> Antes de las próximas 2 horas o antes de las 18:00</li>
+                <li><strong>Moderada:</strong> Mañana 6:00-8:00 AM o hoy 17:00-18:00</li>
+                <li><strong>Baja:</strong> En las próximas 24 horas</li>
+            </ul>
+
+            <h4>Factores de Suelo</h4>
+            <table>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Factor</th>
+                    <th>Característica</th>
+                </tr>
+                <tr>
+                    <td>Arenoso</td>
+                    <td>0.8</td>
+                    <td>Drena rápido, baja retención</td>
+                </tr>
+                <tr>
+                    <td>Franco</td>
+                    <td>1.0</td>
+                    <td>Equilibrado (por defecto)</td>
+                </tr>
+                <tr>
+                    <td>Arcilloso</td>
+                    <td>1.2</td>
+                    <td>Alta retención, absorción lenta</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════ 9. ALERTAS ═══════════════════ -->
+        <div class="section" id="sec9">
+            <h2><span class="emoji">🔔</span> 9. Alertas — Generación y Resolución Automática</h2>
+            <p>El sistema de alertas (<code>AlertasRepository.kt</code> + <code>AlertasFragment.kt</code>) detecta y
+                gestiona problemas en los cultivos de forma automática.</p>
+
+            <h3>Generación de Alertas</h3>
+            <p>Cada vez que se realiza un escaneo, la función <code>syncAlertsForCultivo()</code> compara los valores
+                leídos contra <code>cultivos_reference.json</code>:</p>
+            <ul>
+                <li>Si la humedad está fuera del rango → genera alerta de humedad</li>
+                <li>Si la temperatura está fuera del rango → alerta de temperatura</li>
+                <li>Si el pH está fuera del rango → alerta de pH</li>
+                <li>Si la luz no coincide con el nivel ideal → alerta de luz</li>
+            </ul>
+
+            <h3>Resolución Automática</h3>
+            <div class="info-box">
+                <p><strong>Clave:</strong> Los valores del sensor se pasan <strong>directamente</strong> a
+                    <code>syncAlertsForCultivo()</code> para evitar condiciones de carrera con la base de datos. No se
+                    re-consulta la DB.</p>
+            </div>
+            <ul>
+                <li>Si todos los valores están dentro del rango → <strong>se desactivan</strong> todas las alertas
+                    activas del cultivo (<code>activa = false</code>)</li>
+                <li>Si hay problemas → se actualiza la alerta existente o se crea una nueva</li>
+                <li>Solo se mantiene <strong>1 alerta activa</strong> por cultivo (las duplicadas se desactivan)</li>
+            </ul>
+
+            <h3>Visualización</h3>
+            <p>El <code>AlertasFragment</code> muestra las alertas activas con:</p>
+            <ul>
+                <li>Descripción amigable (ej: "💧 Tu cultivo necesita más agua" en vez de "Humedad baja: 38%")</li>
+                <li>Nombre del cultivo afectado</li>
+                <li>Nivel de severidad (ALTA / MEDIA) con color distintivo</li>
+                <li>Tiempo transcurrido ("Hace 5 min", "Hace 2 horas")</li>
+                <li>Al tocar una alerta se abre un <code>AlertInfoBottomSheet</code> con detalles y recomendaciones</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════ 10. AGENTE IA ═══════════════════ -->
+        <div class="section" id="sec10">
+            <h2><span class="emoji">🤖</span> 10. Agente IA — Chat con Gemini</h2>
+            <p>El fragmento <code>AgenteIAFragment.kt</code> implementa un chat conversacional con <strong>Google
+                    Gemini</strong> (modelo <code>gemini-2.0-flash</code>).</p>
+
+            <h3>Funcionalidades</h3>
+            <table>
+                <tr>
+                    <th>Función</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>💬 Chat de texto</td>
+                    <td>Enviar preguntas y recibir respuestas de la IA</td>
+                </tr>
+                <tr>
+                    <td>📷 Enviar imágenes</td>
+                    <td>Seleccionar fotos de la galería para análisis visual (plagas, enfermedades)</td>
+                </tr>
+                <tr>
+                    <td>🌿 Adjuntar cultivo</td>
+                    <td>Seleccionar un cultivo y enviar sus datos reales del sensor</td>
+                </tr>
+            </table>
+
+            <h3>Cómo se Adjuntan Datos del Cultivo</h3>
+            <ol>
+                <li>El usuario toca el botón de <strong>hoja (🌿)</strong> en la barra del chat</li>
+                <li>Se muestra un diálogo con la lista de cultivos disponibles</li>
+                <li>Al seleccionar uno, la app obtiene la <strong>última lectura</strong> del sensor desde la DB</li>
+                <li>Construye un bloque de texto con: nombre, tipo, fecha, y las 4 métricas</li>
+                <li>Se adjunta como contexto al mensaje que se envía a Gemini</li>
+            </ol>
+
+            <h3>Prompt del Sistema</h3>
+            <p>La IA recibe un prompt de sistema que la configura como experto en agronomía nicaragüense, capacitado
+                para dar consejos prácticos sobre cultivos locales.</p>
+
+            <h3>API Call</h3>
+            <ul>
+                <li>Endpoint:
+                    <code>https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent</code>
+                </li>
+                <li>Soporta <strong>multimodal</strong>: texto + imagen (Base64)</li>
+                <li>Requiere <strong>conexión a internet</strong> (verifica con <code>ConnectivityManager</code>)</li>
+                <li>Timeout: 30 segundos</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════ 11. RESPALDO ═══════════════════ -->
+        <div class="section" id="sec11">
+            <h2><span class="emoji">💾</span> 11. Respaldo de Datos — Exportar e Importar</h2>
+            <p>La actividad <code>BackupActivity.kt</code> permite gestionar la base de datos completa.</p>
+
+            <h3>Exportar</h3>
+            <ol>
+                <li>Lee <strong>todas las tablas</strong> de la base de datos: Dispositivo, Sensor, Cultivo, Lectura,
+                    Umbral, Alerta, Evento de Riego</li>
+                <li>Serializa cada tabla como un <strong>JSONArray</strong></li>
+                <li>Genera un archivo <code>.json</code> con metadatos (app, versión, timestamp)</li>
+                <li>El usuario elige dónde guardar el archivo (SAF — Storage Access Framework)</li>
+            </ol>
+
+            <h3>Importar</h3>
+            <ol>
+                <li>El usuario selecciona un archivo <code>.json</code> de respaldo</li>
+                <li>Se parsean todas las tablas del JSON</li>
+                <li>Se insertan con <code>OnConflictStrategy.REPLACE</code> (si ya existe, se actualiza)</li>
+                <li>Se muestra un resumen: "Importado: X dispositivos, Y cultivos, Z lecturas..."</li>
+            </ol>
+
+            <h3>Formato del Archivo</h3>
+            <pre><code>{
+  "app": "MiSuelo",
+  "version": 2,
+  "timestamp": 1772387493399,
+  "DISPOSITIVO": [...],
+  "SENSOR": [...],
+  "CULTIVO": [...],
+  "LECTURA_SENSOR": [...],
+  "UMBRAL": [...],
+  "ALERTA": [...],
+  "EVENTO_RIEGO": [...]
+}</code></pre>
+
+            <h3>Acceso</h3>
+            <p>Se accede desde el menú <strong>⋮ → Respaldo de Datos</strong> en la barra superior.</p>
+        </div>
+
+        <!-- ═══════════════════ 12. BASE DE DATOS ═══════════════════ -->
+        <div class="section" id="sec12">
+            <h2><span class="emoji">🗄️</span> 12. Base de Datos y Entidades</h2>
+            <p>La app usa <strong>Room</strong> (SQLite) con la clase <code>AppDatabase.kt</code>. Se gestiona con DAOs
+                (Data Access Objects).</p>
+
+            <h3>Tablas</h3>
+            <table>
+                <tr>
+                    <th>Tabla</th>
+                    <th>Campos Clave</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>DISPOSITIVO</td>
+                    <td>id, nombre, MAC, conectado, última conexión</td>
+                    <td>Sensores ESP32 registrados</td>
+                </tr>
+                <tr>
+                    <td>CULTIVO</td>
+                    <td>id, id_dispositivo, nombre, tipo, descripción, activo</td>
+                    <td>Cultivos del usuario</td>
+                </tr>
+                <tr>
+                    <td>LECTURA_SENSOR</td>
+                    <td>id, id_cultivo, fecha, humedad, temp, pH, luz</td>
+                    <td>Cada escaneo guardado</td>
+                </tr>
+                <tr>
+                    <td>UMBRAL</td>
+                    <td>id, id_cultivo, min/max para cada métrica</td>
+                    <td>Rangos ideales por cultivo</td>
+                </tr>
+                <tr>
+                    <td>ALERTA</td>
+                    <td>id, id_cultivo, tipo, nivel, mensaje, activa</td>
+                    <td>Alertas generadas</td>
+                </tr>
+                <tr>
+                    <td>EVENTO_RIEGO</td>
+                    <td>id, id_cultivo, fecha, cantidad, tipo, notas</td>
+                    <td>Registros de riego</td>
+                </tr>
+                <tr>
+                    <td>SENSOR</td>
+                    <td>id, id_dispositivo, tipo, unidad</td>
+                    <td>Tipos de sensor</td>
+                </tr>
+            </table>
+
+            <h3>Converters</h3>
+            <p><code>Converters.kt</code> convierte entre <code>Instant</code> (Java Time) y <code>Long</code> (epoch
+                millis) para almacenar timestamps en SQLite.</p>
+        </div>
+
+        <!-- ═══════════════════ 13. CULTIVOS ═══════════════════ -->
+        <div class="section" id="sec13">
+            <h2><span class="emoji">🌾</span> 13. Cultivos Soportados y Rangos de Referencia</h2>
+            <p>La app soporta 5 tipos de cultivo preconfigurados (<code>CropPresets.kt</code> +
+                <code>cultivos_reference.json</code>):</p>
+
+            <table>
+                <tr>
+                    <th>Cultivo</th>
+                    <th>Humedad (%)</th>
+                    <th>Temperatura (°C)</th>
+                    <th>pH</th>
+                    <th>Luz Ideal</th>
+                </tr>
+                <tr>
+                    <td>🫘 Frijol</td>
+                    <td>50 – 70</td>
+                    <td>15 – 27</td>
+                    <td>6.0 – 7.5</td>
+                    <td>Media-Alta</td>
+                </tr>
+                <tr>
+                    <td>🍅 Tomate</td>
+                    <td>60 – 80</td>
+                    <td>18 – 28</td>
+                    <td>6.0 – 6.8</td>
+                    <td>Alta</td>
+                </tr>
+                <tr>
+                    <td>🌽 Maíz</td>
+                    <td>50 – 80</td>
+                    <td>20 – 30</td>
+                    <td>5.8 – 7.0</td>
+                    <td>Muy Alta</td>
+                </tr>
+                <tr>
+                    <td>🌾 Arroz</td>
+                    <td>70 – 100</td>
+                    <td>20 – 35</td>
+                    <td>5.5 – 6.5</td>
+                    <td>Alta</td>
+                </tr>
+                <tr>
+                    <td>🌶️ Chiltoma</td>
+                    <td>60 – 80</td>
+                    <td>20 – 25</td>
+                    <td>6.5 – 7.0</td>
+                    <td>Media-Alta</td>
+                </tr>
+            </table>
+
+            <div class="info-box">
+                <p><strong>Cultivos personalizados:</strong> Si un tipo de cultivo no coincide con los preconfigurados,
+                    se usan valores genéricos por defecto: Humedad 40-80%, Temp 15-30°C, pH 5.5-7.5.</p>
+            </div>
+
+            <h3>Clasificación de Luz</h3>
+            <table>
+                <tr>
+                    <th>Nivel</th>
+                    <th>Rango (lux)</th>
+                </tr>
+                <tr>
+                    <td>Baja</td>
+                    <td>
+                        < 200 lx</td>
+                </tr>
+                <tr>
+                    <td>Media</td>
+                    <td>200 – 500 lx</td>
+                </tr>
+                <tr>
+                    <td>Alta</td>
+                    <td>500 – 1,000 lx</td>
+                </tr>
+                <tr>
+                    <td>Muy Alta</td>
+                    <td>> 1,000 lx</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════ 14. PÁGINA WEB ═══════════════════ -->
+        <div class="section" id="sec14">
+            <h2><span class="emoji">🌐</span> 14. Página Web del Proyecto</h2>
+            <p>El proyecto incluye un sitio web informativo y una herramienta de actualización de firmware.</p>
+
+            <h3>Página Principal</h3>
+            <p><strong>URL:</strong> <a href="https://soilsense-713.pages.dev/"
+                    target="_blank">https://soilsense-713.pages.dev/</a></p>
+            <ul>
+                <li>Presenta el proyecto MiSuelo con diseño moderno</li>
+                <li>Secciones: Beneficios, Funciones de la App, Cómo Funciona, Tecnología, Equipo</li>
+                <li>Tarjeta interactiva con datos simulados en tiempo real</li>
+                <li>Responsive (adaptable a móvil y escritorio)</li>
+            </ul>
+
+            <h3>Herramienta de Actualización OTA</h3>
+            <p><strong>URL:</strong> <a href="https://soilsense-713.pages.dev/upload"
+                    target="_blank">https://soilsense-713.pages.dev/upload</a></p>
+            <ul>
+                <li>Permite cargar firmware (<code>.bin</code>) al ESP32 vía USB desde el navegador</li>
+                <li>Usa la <strong>Web Serial API</strong> para comunicación directa con el microcontrolador</li>
+                <li>Incluye barra de progreso y consola de logs</li>
+                <li>Compatible con navegadores basados en Chromium (Chrome, Edge)</li>
+            </ul>
+        </div>
+
+    </div><!-- end .content -->
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <div class="report-footer">
+        <p>📄 Informe generado automáticamente — Proyecto MiSuelo © 2026</p>
+        <p>Bryan · Donny · Baneliz</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Para guardar como PDF: Ctrl+P → Destino: "Guardar como PDF"
+        </p>
+    </div>
+
+</body>
+
+</html>
