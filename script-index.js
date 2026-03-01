@@ -74,10 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
     /* --- Live Data Simulation --- */
     const humidityVal = document.getElementById('val-humidity');
     const tempVal = document.getElementById('val-temp');
+    const phVal = document.getElementById('val-ph');
     const lightVal = document.getElementById('val-light');
     const chartBars = document.querySelectorAll('.chart-bar');
-
-    const lightStates = ['Normal', 'Alta', 'Baja', 'Óptima'];
 
     if (humidityVal) {
         setInterval(() => {
@@ -89,8 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 tempVal.innerText = `${t}°C`;
             }
 
+            if (phVal) {
+                const p = (Math.random() * (7.0 - 5.8) + 5.8).toFixed(1);
+                phVal.innerText = p;
+            }
+
             if (lightVal) {
-                lightVal.innerText = lightStates[Math.floor(Math.random() * lightStates.length)];
+                const l = Math.floor(Math.random() * (700 - 350 + 1)) + 350;
+                lightVal.innerText = `${l} lx`;
             }
 
             chartBars.forEach(bar => {
