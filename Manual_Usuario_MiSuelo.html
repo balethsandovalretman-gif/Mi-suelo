@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiSuelo — Manual de Usuario</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --green-primary: #1B5E20;
+            --green-light: #E8F5E9;
+            --green-accent: #4CAF50;
+            --blue-accent: #1565C0;
+            --orange-accent: #E65100;
+            --text-primary: #212121;
+            --text-secondary: #616161;
+            --bg-light: #FAFAFA;
+            --border: #E0E0E0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.7;
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* ─── COVER PAGE ─── */
+        .cover {
+            text-align: center;
+            padding: 80px 0 60px;
+            page-break-after: always;
+        }
+
+        .cover-logo {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--green-primary);
+            margin-bottom: 8px;
+        }
+
+        .cover .subtitle {
+            font-size: 22px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        .cover .version {
+            display: inline-block;
+            background: var(--green-light);
+            color: var(--green-primary);
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .cover .date {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        /* ─── HEADERS ─── */
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--green-primary);
+            margin: 48px 0 16px;
+            border-bottom: 3px solid var(--green-accent);
+            padding-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--green-primary);
+            margin: 36px 0 12px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 24px 0 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 16px 0 4px;
+        }
+
+        p {
+            margin: 8px 0 12px;
+        }
+
+        /* ─── TABLE OF CONTENTS ─── */
+        .toc {
+            page-break-after: always;
+        }
+
+        .toc h1 {
+            border-bottom-color: var(--green-primary);
+        }
+
+        .toc ol {
+            padding-left: 24px;
+        }
+
+        .toc li {
+            padding: 6px 0;
+            font-size: 16px;
+        }
+
+        .toc li a {
+            color: var(--green-primary);
+            text-decoration: none;
+        }
+
+        .toc li a:hover {
+            text-decoration: underline;
+        }
+
+        /* ─── CARDS ─── */
+        .card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+        }
+
+        .card-green {
+            background: var(--green-light);
+            border-color: #C8E6C9;
+        }
+
+        .card-blue {
+            background: #E3F2FD;
+            border-color: #BBDEFB;
+        }
+
+        .card-orange {
+            background: #FFF3E0;
+            border-color: #FFE0B2;
+        }
+
+        .card-purple {
+            background: #F3E5F5;
+            border-color: #E1BEE7;
+        }
+
+        .card-red {
+            background: #FFEBEE;
+            border-color: #FFCDD2;
+        }
+
+        /* ─── HIGHLIGHT BOX ─── */
+        .highlight {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: var(--green-light);
+            border-left: 4px solid var(--green-accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .highlight.warning {
+            background: #FFF8E1;
+            border-left-color: #FFA000;
+        }
+
+        .highlight.danger {
+            background: #FFEBEE;
+            border-left-color: #F44336;
+        }
+
+        .highlight-emoji {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .highlight-text {
+            font-size: 14px;
+        }
+
+        /* ─── STEPS ─── */
+        .steps {
+            counter-reset: step;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .steps li {
+            counter-increment: step;
+            padding: 12px 0 12px 48px;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 32px;
+            height: 32px;
+            background: var(--green-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .steps li:last-child {
+            border-bottom: none;
+        }
+
+        /* ─── TABLE ─── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background: var(--green-primary);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        /* ─── KEYBOARD ─── */
+        kbd {
+            display: inline-block;
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 13px;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* ─── PRINT ─── */
+        @media print {
+            body {
+                padding: 20px;
+                max-width: 100%;
+                font-size: 12pt;
+            }
+
+            .cover {
+                padding: 120px 0 80px;
+            }
+
+            h1 {
+                page-break-before: always;
+            }
+
+            .cover h1 {
+                page-break-before: auto;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+
+            .card {
+                page-break-inside: avoid;
+            }
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        ul li {
+            padding: 4px 0;
+        }
+
+        .emoji-bullet {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .emoji-bullet li {
+            padding: 4px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--                  PORTADA                       -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="cover">
+        <div class="cover-logo">🌱</div>
+        <h1 style="border:none; margin:0; padding:0; font-size:48px;">MiSuelo</h1>
+        <p class="subtitle">Manual de Usuario</p>
+        <span class="version">Versión 2.0</span>
+        <p class="date">Marzo 2026</p>
+        <p style="margin-top: 40px; font-size: 14px; color: #9E9E9E;">
+            Sistema Inteligente de Monitoreo y Análisis de Suelo<br>
+            Tecnología IoT + Inteligencia Artificial
+        </p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--            TABLA DE CONTENIDOS                 -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="toc">
+        <h1 style="page-break-before: auto;">📑 Tabla de Contenidos</h1>
+        <ol>
+            <li><a href="#introduccion">Introducción</a></li>
+            <li><a href="#requisitos">Requisitos del Sistema</a></li>
+            <li><a href="#inicio">Primer Inicio — Pantallas de Bienvenida</a></li>
+            <li><a href="#conexion">Conexión Bluetooth con ESP32</a></li>
+            <li><a href="#monitor">Pantalla Monitor</a>
+                <ol>
+                    <li><a href="#clima">Tarjeta de Clima</a></li>
+                    <li><a href="#agregar">Agregar un Cultivo</a></li>
+                    <li><a href="#cultivos">Tarjetas de Cultivos</a></li>
+                    <li><a href="#presiembra">Análisis Pre-Siembra</a></li>
+                </ol>
+            </li>
+            <li><a href="#detalle">Detalle del Cultivo</a>
+                <ol>
+                    <li><a href="#escaneo">Escanear Datos del Sensor</a></li>
+                    <li><a href="#metricas">Métricas del Suelo</a></li>
+                </ol>
+            </li>
+            <li><a href="#alertas">Observaciones / Alertas</a></li>
+            <li><a href="#historial">Historial</a></li>
+            <li><a href="#agente">Agente IA</a></li>
+            <li><a href="#analisis">Análisis de Cultivos</a></li>
+            <li><a href="#backup">Respaldo de Datos</a></li>
+            <li><a href="#menu">Menú de Opciones</a></li>
+            <li><a href="#soluciones">Solución de Problemas</a></li>
+        </ol>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--               1. INTRODUCCIÓN                  -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="introduccion">1. Introducción</h1>
+
+    <p><strong>MiSuelo</strong> es una aplicación móvil para Android diseñada para el monitoreo inteligente de cultivos.
+        Se conecta a un sensor <strong>ESP32</strong> vía Bluetooth Low Energy (BLE) para medir cuatro parámetros del
+        suelo en tiempo real:</p>
+
+    <div class="card no-break">
+        <table>
+            <tr>
+                <th>Parámetro</th>
+                <th>Sensor</th>
+                <th>Unidad</th>
+                <th>Descripción</th>
+            </tr>
+            <tr>
+                <td>💧 Humedad</td>
+                <td>Capacitivo</td>
+                <td>%</td>
+                <td>Nivel de agua en el suelo</td>
+            </tr>
+            <tr>
+                <td>🌡️ Temperatura</td>
+                <td>Termistor/DHT</td>
+                <td>°C</td>
+                <td>Temperatura del suelo</td>
+            </tr>
+            <tr>
+                <td>🧪 pH</td>
+                <td>Potenciómetro</td>
+                <td>0-14</td>
+                <td>Acidez/alcalinidad del suelo</td>
+            </tr>
+            <tr>
+                <td>☀️ Luz</td>
+                <td>LDR</td>
+                <td>lux</td>
+                <td>Intensidad luminosa</td>
+            </tr>
+        </table>
+    </div>
+
+    <p>Además, la app incluye un <strong>asistente de inteligencia artificial</strong> (Gemini), análisis de
+        compatibilidad de cultivos, alertas automáticas e historial de datos.</p>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--               2. REQUISITOS                    -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="requisitos">2. Requisitos del Sistema</h1>
+
+    <div class="card no-break">
+        <ul class="emoji-bullet">
+            <li>📱 <strong>Android 7.0 (API 24)</strong> o superior</li>
+            <li>📶 <strong>Bluetooth Low Energy (BLE)</strong> habilitado</li>
+            <li>🔧 <strong>Sensor ESP32</strong> con firmware MiSuelo instalado</li>
+            <li>🌐 <strong>Conexión a Internet</strong> — para clima y Agente IA</li>
+            <li>📍 <strong>GPS/Ubicación</strong> — para datos climáticos de tu zona</li>
+        </ul>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--               3. PRIMER INICIO                 -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="inicio">3. Primer Inicio</h1>
+
+    <p>Al instalar la app por primera vez, verás una serie de <strong>pantallas de bienvenida</strong> que explican las
+        funciones principales:</p>
+
+    <div class="card no-break">
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Pantalla</th>
+                <th>Contenido</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>🌱 Bienvenida</td>
+                <td>Introducción general a MiSuelo</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>📊 Monitor de Suelo</td>
+                <td>Métricas en tiempo real (humedad, temp, pH, luz)</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>🔔 Alertas</td>
+                <td>Notificaciones por valores fuera de rango</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>📈 Historial</td>
+                <td>Gráficas y tendencias</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>🤖 Agente IA</td>
+                <td>Chat con inteligencia artificial</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>🌿 Datos al Chat</td>
+                <td>Adjuntar datos de cultivos al Agente IA</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>🔬 Análisis</td>
+                <td>Análisis profundo con IA</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>💾 Respaldo</td>
+                <td>Exportar/importar datos</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>📶 Bluetooth</td>
+                <td>Cómo conectar el sensor ESP32</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>🌐 Página Web</td>
+                <td>Enlace al sitio web y actualización de firmware</td>
+            </tr>
+        </table>
+    </div>
+
+    <p>Después del onboarding, un <strong>tutorial guiado interactivo</strong> resaltará cada botón y sección de la
+        pantalla principal.</p>
+
+    <div class="highlight">
+        <span class="highlight-emoji">💡</span>
+        <div class="highlight-text">
+            Puedes volver a ver la introducción y el tutorial guiado en cualquier momento desde el menú <strong>⋮ →
+                Ayuda</strong>.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--              4. CONEXIÓN BLUETOOTH             -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="conexion">4. Conexión Bluetooth con ESP32</h1>
+
+    <h3>¿Cómo conectar?</h3>
+    <ol class="steps">
+        <li>Enciende tu sensor <strong>ESP32</strong> (asegúrate de que tenga el firmware MiSuelo).</li>
+        <li>En la app, toca el ícono de <strong>Bluetooth</strong> 📶 en la barra superior, o ve al menú <strong>⋮ →
+                Conectar</strong>.</li>
+        <li>La app comenzará a <strong>buscar</strong> automáticamente. La barra se pondrá <strong>naranja</strong> con
+            el texto "BUSCANDO...".</li>
+        <li>Cuando encuentre tu sensor, se conectará automáticamente. La barra se pondrá <strong>verde</strong> con
+            "CONECTADO".</li>
+    </ol>
+
+    <h3>Estados de conexión</h3>
+    <div class="card no-break">
+        <table>
+            <tr>
+                <th>Color de Barra</th>
+                <th>Estado</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>🟢 Verde</td>
+                <td>CONECTADO</td>
+                <td>Sensor enlazado y listo para escanear</td>
+            </tr>
+            <tr>
+                <td>🟡 Naranja</td>
+                <td>BUSCANDO</td>
+                <td>Buscando sensor ESP32 cercano</td>
+            </tr>
+            <tr>
+                <td>⚫ Gris</td>
+                <td>DESCONECTADO</td>
+                <td>Sin conexión al sensor</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="highlight warning">
+        <span class="highlight-emoji">⚠️</span>
+        <div class="highlight-text">
+            <strong>Importante:</strong> El sensor debe estar encendido y cerca (máximo ~10 metros) para que la conexión
+            funcione. Si no se conecta, reinicia el sensor y verifica que el Bluetooth está activado en tu teléfono.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--              5. PANTALLA MONITOR               -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="monitor">5. Pantalla Monitor</h1>
+
+    <p>La pantalla principal de la app. Aquí ves tus cultivos activos, el clima y accedes a las funciones principales.
+    </p>
+
+    <!-- 5.1 CLIMA -->
+    <h2 id="clima">5.1 Tarjeta de Clima 🌤️</h2>
+
+    <p>En la parte superior aparece una tarjeta con el clima actual de tu ubicación. Muestra:</p>
+    <ul class="emoji-bullet">
+        <li>☀️ Ícono y descripción del clima</li>
+        <li>🌡️ Temperatura actual</li>
+        <li>📍 Tu ubicación detectada</li>
+    </ul>
+
+    <h4>Expandir la tarjeta</h4>
+    <p>Toca la tarjeta de clima para expandirla y ver:</p>
+    <ul class="emoji-bullet">
+        <li>💧 <strong>Humedad del aire</strong></li>
+        <li>💨 <strong>Velocidad del viento</strong></li>
+        <li>🌡️ <strong>Sensación térmica</strong></li>
+        <li>📅 <strong>Pronóstico</strong> de los próximos días</li>
+        <li>🌱 <strong>Consejo agrícola</strong> personalizado basado en el clima</li>
+    </ul>
+    <p>Toca nuevamente para contraer.</p>
+
+    <!-- 5.2 AGREGAR CULTIVO -->
+    <h2 id="agregar">5.2 Agregar un Cultivo ➕</h2>
+
+    <ol class="steps">
+        <li>Toca el botón verde <strong>➕</strong> en la esquina superior derecha.</li>
+        <li>Se abrirá un formulario. Completa:
+            <ul>
+                <li><strong>Nombre:</strong> un nombre para identificar tu cultivo (ej: "Tomates del patio").</li>
+                <li><strong>Tipo de cultivo:</strong> selecciona del menú desplegable (Frijol, Maíz, Arroz, Tomate,
+                    Chiltomo).</li>
+                <li><strong>Referencias/Descripción:</strong> (opcional) notas adicionales.</li>
+            </ul>
+        </li>
+        <li>Presiona <strong>Guardar</strong>. El cultivo se creará con rangos óptimos predefinidos según el tipo
+            seleccionado.</li>
+    </ol>
+
+    <div class="highlight">
+        <span class="highlight-emoji">📌</span>
+        <div class="highlight-text">
+            <strong>Requisito:</strong> Debes tener al menos un sensor ESP32 registrado (haberse conectado al menos una
+            vez) para poder crear cultivos.
+        </div>
+    </div>
+
+    <!-- 5.3 TARJETAS DE CULTIVOS -->
+    <h2 id="cultivos">5.3 Tarjetas de Cultivos 🌱</h2>
+
+    <p>Debajo del clima aparecen las tarjetas de tus cultivos registrados. Cada tarjeta muestra:</p>
+    <ul class="emoji-bullet">
+        <li>🌱 Nombre y tipo del cultivo</li>
+        <li>📊 Última lectura del sensor (humedad, temperatura, pH, luz)</li>
+        <li>🕐 Fecha de la última lectura</li>
+    </ul>
+
+    <p><strong>Toca cualquier tarjeta</strong> para abrir el detalle completo del cultivo.</p>
+
+    <p>Si no tienes cultivos registrados, verás una tarjeta indicando <em>"No hay cultivos registrados"</em> con
+        instrucciones para agregar uno.</p>
+
+    <!-- 5.4 ANÁLISIS PRE-SIEMBRA -->
+    <h2 id="presiembra">5.4 Análisis Pre-Siembra 🔬</h2>
+
+    <p>Para evaluar tu terreno <strong>antes de sembrar</strong>:</p>
+
+    <ol class="steps">
+        <li>Toca el botón morado <strong>🔬</strong> (junto al botón ➕) en la pantalla Monitor.</li>
+        <li>Se abrirá la pantalla de análisis pre-siembra.</li>
+        <li>Presiona <strong>"📡 Escanear terreno"</strong> para iniciar un escaneo BLE al sensor.</li>
+        <li>Espera a que lleguen los datos (2-5 segundos).</li>
+        <li>La app mostrará:
+            <ul>
+                <li><strong>Estado del Suelo:</strong> las 4 métricas con indicadores de estado (🟢/🟡/🔴).</li>
+                <li><strong>Ranking de Compatibilidad:</strong> qué cultivos son más compatibles con tu suelo actual.
+                </li>
+            </ul>
+        </li>
+        <li>Toca cualquier cultivo del ranking para ver su <strong>Plan de Preparación</strong> — pasos específicos para
+            acondicionar el suelo.</li>
+    </ol>
+
+    <div class="card card-green no-break">
+        <h4>📋 Plan de Preparación</h4>
+        <p>El plan de preparación indica para cada parámetro:</p>
+        <ul>
+            <li>✅ Si el valor está dentro del rango ideal</li>
+            <li>🔧 Qué acción tomar si está fuera de rango (ej: "Agregar compost", "Aplicar cal", "Instalar malla
+                sombra")</li>
+            <li>📊 El rango ideal del cultivo seleccionado</li>
+        </ul>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--            6. DETALLE DEL CULTIVO              -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="detalle">6. Detalle del Cultivo</h1>
+
+    <p>Al tocar una tarjeta de cultivo en el Monitor, se abre el detalle con toda la información del cultivo.</p>
+
+    <!-- 6.1 ESCANEO -->
+    <h2 id="escaneo">6.1 Escanear Datos del Sensor 📡</h2>
+
+    <ol class="steps">
+        <li>Asegúrate de que el sensor ESP32 está <strong>conectado</strong> (barra verde).</li>
+        <li>Presiona el botón <strong>"Escanear"</strong>.</li>
+        <li>La app enviará el comando <code>SCAN</code> al ESP32 vía Bluetooth.</li>
+        <li>Espera a que los datos lleguen (la app acumulará los fragmentos automáticamente).</li>
+        <li>Los valores se guardarán en la base de datos y se mostrarán en las tarjetas de métricas.</li>
+    </ol>
+
+    <div class="highlight warning">
+        <span class="highlight-emoji">📶</span>
+        <div class="highlight-text">
+            El escaneo requiere conexión Bluetooth activa. Si no estás conectado, la app te pedirá que te conectes
+            primero.
+        </div>
+    </div>
+
+    <!-- 6.2 MÉTRICAS -->
+    <h2 id="metricas">6.2 Métricas del Suelo 📊</h2>
+
+    <p>Después de un escaneo, verás 4 tarjetas de métricas:</p>
+
+    <div class="card no-break">
+        <table>
+            <tr>
+                <th>Métrica</th>
+                <th>Color de Tarjeta</th>
+                <th>Indicadores</th>
+            </tr>
+            <tr>
+                <td>💧 Humedad</td>
+                <td>Azul</td>
+                <td>Valor actual vs rango ideal del cultivo</td>
+            </tr>
+            <tr>
+                <td>🌡️ Temperatura</td>
+                <td>Naranja</td>
+                <td>Valor actual vs rango ideal</td>
+            </tr>
+            <tr>
+                <td>🧪 pH</td>
+                <td>Morado</td>
+                <td>Acidez/alcalinidad vs rango ideal</td>
+            </tr>
+            <tr>
+                <td>☀️ Luz</td>
+                <td>Amarillo</td>
+                <td>Intensidad lumínica vs rango ideal</td>
+            </tr>
+        </table>
+    </div>
+
+    <p><strong>Toca cada tarjeta de métrica</strong> para ver información detallada: el valor actual, el rango ideal
+        para tu tipo de cultivo, y una recomendación si está fuera de rango.</p>
+
+    <h3>Indicadores de estado</h3>
+    <ul class="emoji-bullet">
+        <li>🟢 <strong>Óptimo:</strong> el valor está dentro del rango ideal</li>
+        <li>🟡 <strong>Precaución:</strong> el valor se acerca al límite</li>
+        <li>🔴 <strong>Alerta:</strong> el valor está fuera del rango ideal</li>
+    </ul>
+
+    <h3>Otras opciones en el detalle</h3>
+    <ul class="emoji-bullet">
+        <li>🗑️ <strong>Eliminar cultivo:</strong> botón para eliminar el cultivo (con confirmación)</li>
+        <li>⬅️ <strong>Volver:</strong> botón para regresar al Monitor</li>
+    </ul>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--              7. ALERTAS                        -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="alertas">7. Observaciones / Alertas 🔔</h1>
+
+    <p>La pestaña <strong>Observaciones</strong> (ícono 🔔 en la barra inferior) muestra alertas automáticas cuando los
+        valores de tus cultivos están fuera de rango.</p>
+
+    <h3>¿Cuándo se generan alertas?</h3>
+    <p>Cada vez que se realiza un escaneo de sensor, la app compara los valores obtenidos con los rangos ideales del
+        cultivo. Si algún valor está fuera de rango, se genera una alerta.</p>
+
+    <h3>Contenido de cada alerta</h3>
+    <ul class="emoji-bullet">
+        <li>⚠️ Tipo de alerta (humedad alta/baja, temperatura, pH, luz)</li>
+        <li>📊 Valor actual vs valor esperado</li>
+        <li>🌱 Nombre del cultivo afectado</li>
+        <li>🕐 Fecha y hora de la alerta</li>
+        <li>💡 Recomendación de acción</li>
+    </ul>
+
+    <div class="highlight">
+        <span class="highlight-emoji">🔴</span>
+        <div class="highlight-text">
+            Cuando hay alertas sin leer, aparece un <strong>punto rojo</strong> sobre el ícono de Observaciones en la
+            barra de navegación.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--              8. HISTORIAL                      -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="historial">8. Historial 📊</h1>
+
+    <p>La pestaña <strong>Historial</strong> (ícono 📊 en la barra inferior) te permite consultar datos históricos de
+        tus cultivos.</p>
+
+    <h3>Funcionalidades</h3>
+    <ul class="emoji-bullet">
+        <li>📈 <strong>Gráficas interactivas</strong> de cada métrica a lo largo del tiempo</li>
+        <li>🔍 <strong>Filtrar por cultivo</strong> para ver solo los datos de uno específico</li>
+        <li>📅 <strong>Rango de fechas</strong> para acotar el período de análisis</li>
+        <li>📊 <strong>Estadísticas</strong> — valores promedio, mínimo y máximo</li>
+    </ul>
+
+    <h3>¿Cómo usar?</h3>
+    <ol class="steps">
+        <li>Ve a la pestaña Historial desde la barra inferior.</li>
+        <li>Selecciona un <strong>cultivo</strong> del selector.</li>
+        <li>Observa las gráficas para cada métrica (humedad, temperatura, pH, luz).</li>
+        <li>Desliza o acerca (pinch-to-zoom) para explorar los datos.</li>
+    </ol>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--              9. AGENTE IA                      -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="agente">9. Agente IA 🤖</h1>
+
+    <p>Tu asistente agrícola inteligente potenciado por <strong>Google Gemini</strong>. Accede desde la pestaña 🤖 en la
+        barra inferior.</p>
+
+    <h3>Funcionalidades</h3>
+
+    <div class="card card-blue no-break">
+        <h4>💬 Chat de texto</h4>
+        <p>Escribe cualquier pregunta sobre agricultura y obtén una respuesta especializada.</p>
+        <p><strong>Ejemplos de preguntas:</strong></p>
+        <ul>
+            <li>"¿Cuál es el pH ideal para el tomate?"</li>
+            <li>"Mi planta tiene hojas amarillas, ¿qué hago?"</li>
+            <li>"¿Cuándo debo regar si la humedad está al 30%?"</li>
+        </ul>
+    </div>
+
+    <div class="card card-purple no-break">
+        <h4>📷 Enviar fotos</h4>
+        <p>Toca el ícono de <strong>cámara/galería</strong> para adjuntar una imagen. La IA analizará la foto y te dará
+            un diagnóstico.</p>
+        <p><strong>Usos:</strong></p>
+        <ul>
+            <li>📸 Fotos de plagas o enfermedades</li>
+            <li>🍂 Hojas dañadas para diagnóstico</li>
+            <li>🌱 Estado general de la planta</li>
+        </ul>
+    </div>
+
+    <div class="card card-green no-break">
+        <h4>🌿 Adjuntar datos de cultivo</h4>
+        <p>Toca el ícono de <strong>hoja 🌿</strong> para seleccionar un cultivo. La IA recibirá automáticamente los
+            datos reales de tu sensor y te dará recomendaciones personalizadas.</p>
+        <ol class="steps">
+            <li>Toca el ícono 🌿 en la barra del chat.</li>
+            <li>Selecciona un cultivo de tu lista.</li>
+            <li>Aparecerá un chip con el nombre del cultivo adjuntado.</li>
+            <li>Escribe tu pregunta y envía. La IA tendrá acceso a los datos reales del sensor.</li>
+        </ol>
+    </div>
+
+    <div class="highlight warning">
+        <span class="highlight-emoji">🌐</span>
+        <div class="highlight-text">
+            El Agente IA requiere <strong>conexión a Internet</strong> para funcionar.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--             10. ANÁLISIS                       -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="analisis">10. Análisis de Cultivos 📈</h1>
+
+    <p>La pestaña <strong>Análisis</strong> (ícono 📈 en la barra inferior) ofrece análisis detallado de cada cultivo
+        usando inteligencia artificial.</p>
+
+    <h3>Contenido del análisis</h3>
+    <ul class="emoji-bullet">
+        <li>📊 <strong>Tendencias</strong> de cada métrica</li>
+        <li>🎯 <strong>Predicciones</strong> basadas en datos históricos</li>
+        <li>📋 <strong>Comparación</strong> con valores ideales de referencia</li>
+        <li>🌡️ <strong>Análisis detallado</strong> por métrica</li>
+        <li>📝 <strong>Recomendaciones</strong> generadas por IA</li>
+    </ul>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--             11. RESPALDO                       -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="backup">11. Respaldo de Datos 💾</h1>
+
+    <p>Protege tu información exportando e importando datos. Accede desde el menú <strong>⋮ → Respaldo de
+            Datos</strong>.</p>
+
+    <h2>Exportar (crear respaldo) 📤</h2>
+    <ol class="steps">
+        <li>Toca <strong>"Exportar Datos"</strong>.</li>
+        <li>El sistema te pedirá dónde guardar el archivo.</li>
+        <li>Se generará un archivo <code>.json</code> con todos tus datos:
+            <ul>
+                <li>Dispositivos registrados</li>
+                <li>Sensores</li>
+                <li>Cultivos</li>
+                <li>Lecturas de sensores</li>
+                <li>Umbrales configurados</li>
+                <li>Alertas</li>
+                <li>Eventos de riego</li>
+                <li>Análisis de terreno (pre-siembra)</li>
+            </ul>
+        </li>
+        <li>Verás un mensaje con el total de registros exportados.</li>
+    </ol>
+
+    <h2>Importar (restaurar respaldo) 📥</h2>
+    <ol class="steps">
+        <li>Toca <strong>"Importar Datos"</strong>.</li>
+        <li>Se mostrará una advertencia: la importación <strong>reemplaza TODOS los datos actuales</strong>.</li>
+        <li>Selecciona el archivo <code>.json</code> de respaldo.</li>
+        <li>Espera a que se complete la importación.</li>
+        <li><strong>Reinicia la app</strong> para ver los cambios.</li>
+    </ol>
+
+    <div class="highlight danger">
+        <span class="highlight-emoji">⚠️</span>
+        <div class="highlight-text">
+            <strong>Precaución:</strong> La importación elimina todos los datos actuales y los reemplaza con los del
+            archivo. Asegúrate de exportar un respaldo antes de importar.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--             12. MENÚ                           -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="menu">12. Menú de Opciones ⋮</h1>
+
+    <p>Toca los tres puntos <strong>⋮</strong> en la esquina superior derecha para acceder a:</p>
+
+    <div class="card no-break">
+        <table>
+            <tr>
+                <th>Opción</th>
+                <th>Descripción</th>
+            </tr>
+            <tr>
+                <td>📶 Conectar/Desconectar</td>
+                <td>Conectar o desconectar el sensor ESP32 (también disponible como ícono en la barra)</td>
+            </tr>
+            <tr>
+                <td>ℹ️ Acerca de</td>
+                <td>Información de la app, versión, y enlace al sitio web del proyecto</td>
+            </tr>
+            <tr>
+                <td>💾 Respaldo de Datos</td>
+                <td>Exportar/importar toda la base de datos</td>
+            </tr>
+            <tr>
+                <td>📖 Ayuda</td>
+                <td>Dos opciones: ver las pantallas de introducción o iniciar el tutorial guiado interactivo</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--             13. SOLUCIÓN DE PROBLEMAS          -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h1 id="soluciones">13. Solución de Problemas</h1>
+
+    <div class="card card-orange no-break">
+        <h4>❌ "No se puede conectar al sensor"</h4>
+        <ul>
+            <li>Verifica que el Bluetooth esté activado en tu teléfono</li>
+            <li>Asegúrate de que el ESP32 esté encendido</li>
+            <li>Acércate al sensor (máx. ~10 metros)</li>
+            <li>Reinicia el sensor ESP32</li>
+            <li>Verifica los permisos de Bluetooth y Ubicación en Ajustes → Apps → MiSuelo</li>
+        </ul>
+    </div>
+
+    <div class="card card-orange no-break">
+        <h4>❌ "No llegan datos al escanear"</h4>
+        <ul>
+            <li>Verifica que la barra esté <strong>verde</strong> (CONECTADO) antes de escanear</li>
+            <li>Espera 5-10 segundos; los datos llegan en fragmentos</li>
+            <li>Si no llegan, desconecta y reconecta el sensor</li>
+        </ul>
+    </div>
+
+    <div class="card card-orange no-break">
+        <h4>❌ "El Agente IA no responde"</h4>
+        <ul>
+            <li>Verifica tu conexión a Internet</li>
+            <li>El servicio de Gemini puede estar temporalmente no disponible</li>
+            <li>Intenta nuevamente en unos minutos</li>
+        </ul>
+    </div>
+
+    <div class="card card-orange no-break">
+        <h4>❌ "No aparece el clima"</h4>
+        <ul>
+            <li>Activa los permisos de <strong>Ubicación</strong> para la app</li>
+            <li>Asegúrate de tener conexión a Internet</li>
+            <li>Activa el GPS del teléfono</li>
+        </ul>
+    </div>
+
+    <div class="card card-orange no-break">
+        <h4>❌ "Quiero repetir el tutorial"</h4>
+        <ul>
+            <li>Ve al menú <strong>⋮ → Ayuda</strong></li>
+            <li>Selecciona <strong>"📱 Ver introducción"</strong> para las pantallas de bienvenida</li>
+            <li>Selecciona <strong>"🎯 Tutorial guiado interactivo"</strong> para el tour con spotlight</li>
+        </ul>
+    </div>
+
+    <!-- ─── FOOTER ─── -->
+    <div style="text-align: center; margin-top: 60px; padding: 30px 0; border-top: 2px solid var(--border);">
+        <p style="font-size: 32px;">🌱</p>
+        <p style="font-size: 18px; font-weight: 600; color: var(--green-primary);">MiSuelo v2.0</p>
+        <p style="font-size: 13px; color: var(--text-secondary);">Sistema Inteligente de Monitoreo y Análisis de Suelo
+        </p>
+        <p style="font-size: 12px; color: #BDBDBD; margin-top: 12px;">© 2026 </p>
+    </div>
+
+</body>
+
+</html>
